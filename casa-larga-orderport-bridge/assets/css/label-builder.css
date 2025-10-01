@@ -1,0 +1,179 @@
+/* Custom Label Builder Styles */
+
+.cl-custom-label-builder {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.cl-builder-container {
+	display: grid;
+	grid-template-columns: 300px 1fr;
+	gap: 30px;
+	margin: 30px 0;
+}
+
+.cl-builder-sidebar {
+	background: #f9f9f9;
+	padding: 20px;
+	border-radius: 8px;
+	border: 1px solid #ddd;
+}
+
+.cl-builder-sidebar h3 {
+	margin-top: 0;
+	color: #8B0000;
+	border-bottom: 2px solid #8B0000;
+	padding-bottom: 10px;
+}
+
+.cl-tool-button {
+	background: #8B0000;
+	color: white;
+	border: none;
+	padding: 10px 15px;
+	border-radius: 4px;
+	cursor: pointer;
+	margin: 5px 5px 5px 0;
+	transition: background 0.3s ease;
+}
+
+.cl-tool-button:hover {
+	background: #660000;
+}
+
+.cl-builder-sidebar input,
+.cl-builder-sidebar select,
+.cl-builder-sidebar textarea {
+	width: 100%;
+	padding: 8px;
+	margin: 5px 0;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+.cl-alignment-buttons {
+	display: flex;
+	gap: 5px;
+	margin-top: 5px;
+}
+
+.cl-align-btn {
+	background: #f0f0f0;
+	border: 1px solid #ddd;
+	padding: 8px 12px;
+	cursor: pointer;
+	border-radius: 4px;
+}
+
+.cl-align-btn.active {
+	background: #8B0000;
+	color: white;
+}
+
+.cl-canvas-container {
+	text-align: center;
+	background: white;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+}
+
+.cl-canvas-header {
+	margin-bottom: 15px;
+}
+
+.cl-canvas-help {
+	color: #666;
+	font-size: 0.9em;
+	margin: 5px 0;
+}
+
+#label-canvas {
+	border: 2px solid #ddd;
+	border-radius: 4px;
+	cursor: crosshair;
+}
+
+.cl-canvas-actions {
+	margin-top: 15px;
+}
+
+.cl-canvas-btn {
+	background: #f0f0f0;
+	border: 1px solid #ddd;
+	padding: 8px 12px;
+	margin: 0 5px;
+	cursor: pointer;
+	border-radius: 4px;
+}
+
+.cl-canvas-btn:hover {
+	background: #e0e0e0;
+}
+
+.cl-order-form {
+	background: #f9f9f9;
+	padding: 30px;
+	border-radius: 8px;
+	border: 1px solid #ddd;
+	margin-top: 30px;
+}
+
+.cl-form-row {
+	margin-bottom: 20px;
+}
+
+.cl-form-row label {
+	display: block;
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+
+.cl-form-row input,
+.cl-form-row textarea {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+.cl-submit-order {
+	background: #8B0000;
+	color: white;
+	border: none;
+	padding: 15px 30px;
+	font-size: 1.1em;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background 0.3s ease;
+}
+
+.cl-submit-order:hover {
+	background: #660000;
+}
+
+.cl-submit-order:disabled {
+	background: #ccc;
+	cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+	.cl-builder-container {
+		grid-template-columns: 1fr;
+	}
+	
+	.cl-builder-sidebar {
+		order: 2;
+	}
+	
+	.cl-canvas-container {
+		order: 1;
+	}
+	
+	#label-canvas {
+		width: 100%;
+		height: auto;
+	}
+}
