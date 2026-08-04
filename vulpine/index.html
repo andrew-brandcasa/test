@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en" data-state="public">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vulpine · Control Architecture Benchmark and Authority Model</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   Vulpine · Component build
+   Built to VulpineComponentSpec.pdf + VulpineBenchmarkPublicationSpec.pdf.
+
+   Colour logic, verbatim from the spec: "Steel carries structure. Orange
+   marks a decision." The maturity ramp is steel because maturity encodes
+   magnitude, not decision. Orange appears only where the reader is told
+   something gates, blocks or requires action.
+
+   Contrast values in comments are the spec's own measured figures.
+   ========================================================================== */
+:root{
+  --sans:"Geist",Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,"Liberation Mono",monospace;
+
+  /* Cold Steel ordinal ramp — single hue, monotone lightness. */
+  --steel-1:#9AACBA;   /* maturity 0 · clears cream at 2.09:1 */
+  --steel-2:#6B8395;   /* maturity 1 */
+  --steel-3:#455E70;   /* maturity 2 */
+  --steel:#2B3B4B;     /* maturity 3 · structure · 10.26:1 on cream */
+
+  /* Orange is reserved. Never used for magnitude. */
+  --orange:#CA6135;    /* fills and marks */
+  --orange-tx:#A2431F; /* orange text under 12px · 5.59:1 */
+
+  --bg:#F4F2ED;
+  --deep:#EAE6DE;
+  --surface:#FFFFFF;
+  --ink:#15151B;
+  --mut:#5A5E69;
+  --dim:#8A8D97;
+  --hair:rgba(21,21,27,.14);
+  --hair-soft:rgba(21,21,27,.08);
+
+  --r-lg:16px; --r-md:12px; --r-sm:8px;
+  --w:1400px; --pad:clamp(20px,3.6vw,68px);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--w);margin:0 auto;padding:0 var(--pad)}
+h1,h2,h3,h4{font-weight:500;letter-spacing:-.03em;margin:0}
+p{margin:0}
+
+section{padding:clamp(64px,8vw,120px) 0}
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;
+  color:var(--orange-tx);display:flex;align-items:center;gap:9px;margin-bottom:22px}
+.eyebrow::before{content:"";width:7px;height:7px;background:var(--orange);border-radius:1px;
+  transform:rotate(45deg);flex:0 0 auto}
+.stmt{font-size:clamp(22px,2.8vw,36px);line-height:1.28;letter-spacing:-.025em;max-width:34ch}
+.stmt .d1{color:var(--mut)}
+.lead{color:var(--mut);font-size:clamp(15px,1.2vw,17px);max-width:56ch}
+
+/* ---------- provenance block · mono, small, quiet ---------- */
+.prov{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--dim);
+  line-height:1.9;border-left:2px solid var(--orange);padding-left:16px}
+.prov b{color:var(--ink);font-weight:400}
+
+.head{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,90px);align-items:end;
+  margin-bottom:clamp(32px,4vw,56px)}
+@media (max-width:900px){.head{grid-template-columns:1fr;align-items:start}}
+
+/* ---------- maturity key · beside the table, never inside the rows ---------- */
+.keyrow{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;
+  flex-wrap:wrap;margin-bottom:14px}
+.mkey{display:flex;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.mkey div{display:flex;align-items:center;gap:7px}
+.mkey i{width:22px;height:8px;border-radius:2px;display:block;flex:0 0 auto}
+.mkey .l0{background:var(--steel-1)} .mkey .l1{background:var(--steel-2)}
+.mkey .l2{background:var(--steel-3)} .mkey .l3{background:var(--steel)}
+.mkey b{color:var(--mut);font-weight:400}
+
+/* ---------- the instrument ---------- */
+.inst{background:var(--surface);border:1px solid var(--hair);border-radius:var(--r-lg);overflow:hidden}
+.inst-top{display:flex;justify-content:space-between;align-items:baseline;gap:20px;
+  padding:20px 26px;border-bottom:1px solid var(--hair);flex-wrap:wrap}
+.inst-top .t{font-family:var(--mono);font-size:10.5px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--dim)}
+
+table.mx{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;font-size:14px}
+table.mx th,table.mx td{text-align:left;font-weight:400;padding:0}
+table.mx thead th{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dim);padding:13px 0 11px;border-bottom:1px solid var(--hair)}
+table.mx thead th:first-child{padding-left:26px;width:38%}
+table.mx thead th.mid{width:23%}
+table.mx thead th.lv{text-align:center;width:10%}
+table.mx thead th:last-child{text-align:right;padding-right:26px;width:16%}
+table.mx tbody tr{border-bottom:1px solid var(--hair-soft)}
+table.mx tbody tr:last-child{border-bottom:0}
+
+.dom{padding:14px 18px 14px 26px;color:var(--steel);white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+.dom code{font-family:var(--mono);font-size:11px;color:var(--dim);margin-right:12px}
+/* requirement ranges: mono, steel, never abbreviated or restyled */
+.rid{font-family:var(--mono);font-size:12px;color:var(--steel);letter-spacing:.04em;padding:14px 10px 14px 0}
+.rid span{color:var(--dim)}
+.rcount{font-family:var(--mono);font-size:12px;color:var(--mut);letter-spacing:.04em;padding:14px 10px 14px 0}
+
+/* gate tag · two states only. Steel outline baseline, orange when the domain
+   must reach level 3 before T3 authority is granted. Only orange in the panel. */
+td.gate{text-align:right;padding:12px 26px 12px 10px;white-space:nowrap}
+.tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;
+  border-radius:3px;padding:3px 7px;display:inline-block;border:1px solid var(--steel-2);color:var(--steel-3)}
+.tag.t3{border-color:var(--orange);color:var(--orange-tx)}
+
+/* ---------- authority gate strip · closes the argument ---------- */
+.gates{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;
+  background:var(--hair);border-top:1px solid var(--hair)}
+.gates > div{background:var(--surface);padding:18px 22px}
+.gates .lab{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--orange-tx);margin-bottom:8px}
+.gates .v{font-size:16px;letter-spacing:-.015em;margin-bottom:5px;color:var(--steel)}
+.gates p{color:var(--mut);font-size:13px}
+
+/* ---------- scored variant · internal only ---------- */
+.cell{padding:7px 3px}
+.seg{display:block;height:24px;border-radius:3px;background:rgba(21,21,27,.06);
+  box-shadow:inset 0 0 0 1px rgba(21,21,27,.13)}
+.seg[data-on="1"]{background:var(--steel-1);box-shadow:none}
+.seg[data-on="2"]{background:var(--steel-2);box-shadow:none}
+.seg[data-on="3"]{background:var(--steel-3);box-shadow:none}
+.seg[data-on="4"]{background:var(--steel);box-shadow:none}
+td.score{text-align:right;padding:12px 26px 12px 10px;font-family:var(--mono);font-size:12px;color:var(--steel)}
+.assessed .lab{color:var(--dim)}
+.assessed .v.blocked{color:var(--orange-tx)}
+.warn{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--orange-tx);margin-left:10px}
+
+html[data-state="public"] .internal-only{display:none}
+html[data-state="internal"] .public-only{display:none}
+
+/* ---------- authority ladder ---------- */
+.ladder{display:grid;gap:1px;background:var(--hair);border:1px solid var(--hair);
+  border-radius:var(--r-md);overflow:hidden}
+.rung{background:var(--surface);display:grid;grid-template-columns:140px 1fr 260px}
+.rung .id{padding:22px;border-right:1px solid var(--hair);display:flex;flex-direction:column;
+  gap:10px;justify-content:center}
+.rung .id code{font-family:var(--mono);font-size:16px;letter-spacing:.06em;color:var(--steel)}
+.rung .id .bar{height:4px;border-radius:2px}
+.rung:nth-child(1) .bar{background:var(--steel-1)}
+.rung:nth-child(2) .bar{background:var(--steel-2)}
+.rung:nth-child(3) .bar{background:var(--steel-3)}
+.rung:nth-child(4) .bar{background:var(--steel)}
+.rung .b{padding:22px}
+.rung .b h4{font-size:17px;margin-bottom:6px;letter-spacing:-.02em;color:var(--steel)}
+.rung .b p{color:var(--mut);font-size:14px;max-width:52ch}
+.rung .g{padding:22px;border-left:1px solid var(--hair);display:flex;flex-direction:column;
+  justify-content:center;gap:7px}
+.rung .g .lab{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--dim)}
+/* orange only on the requirement identifiers; the sentence around them stays steel */
+.rung .g .req{font-size:13.5px;color:var(--steel-3)}
+.rung .g .req em{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--orange-tx)}
+@media (max-width:900px){
+  .rung{grid-template-columns:1fr}
+  .rung .id{border-right:0;border-bottom:1px solid var(--hair);flex-direction:row;
+    align-items:center;gap:16px}
+  .rung .id .bar{width:64px}
+  .rung .g{border-left:0;border-top:1px solid var(--hair)}
+}
+
+/* ---------- responsive instrument · a list that opens, not a squeezed table ----------
+   Two facts must survive the breakpoint: eleven domains, and six carry a
+   level-3 bar. The gate tag therefore never hides behind an interaction. */
+.mob{display:none}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hair);
+  border:1px solid var(--hair);border-radius:var(--r-md);overflow:hidden;margin-bottom:16px}
+.summary > div{background:var(--surface);padding:16px 18px}
+.summary .fig{font-size:26px;letter-spacing:-.03em;color:var(--steel)}
+.summary .cap{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--dim);margin-top:4px;line-height:1.5}
+.mlist{border:1px solid var(--hair);border-radius:var(--r-md);overflow:hidden;background:var(--surface)}
+.mrow{border-bottom:1px solid var(--hair-soft)}
+.mrow:last-child{border-bottom:0}
+.mrow summary{list-style:none;cursor:pointer;padding:14px 16px;display:grid;
+  grid-template-columns:1fr auto;gap:10px 12px;align-items:center}
+.mrow summary::-webkit-details-marker{display:none}
+.mrow .top{grid-column:1;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--dim)}
+.mrow .tag{grid-column:2;grid-row:1}
+.mrow .nm{grid-column:1/-1;font-size:15px;color:var(--steel);letter-spacing:-.015em}
+.mrow .rng{grid-column:1;font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.04em}
+.mrow .pm{grid-column:2;font-family:var(--mono);font-size:15px;color:var(--dim);line-height:1}
+.mrow[open] .pm{visibility:hidden}
+.mrow[open] .pm-open{visibility:visible}
+.mbody{padding:0 16px 16px;color:var(--mut);font-size:13.5px;line-height:1.6}
+.mbody .meta{margin-top:8px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--dim)}
+.mbody .meta .t3{color:var(--orange-tx)}
+@media (max-width:900px){
+  .desk{display:none}
+  .mob{display:block}
+  .keyrow{flex-direction:column;align-items:flex-start}
+}
+
+/* ---------- review chrome · not part of the site ---------- */
+#rev{position:fixed;right:16px;bottom:16px;z-index:50;background:var(--surface);
+  border:1px solid var(--hair);border-radius:14px;box-shadow:0 14px 40px rgba(21,21,27,.10);
+  padding:13px 15px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+#rev h6{margin:0 0 10px;color:var(--dim);font-weight:400;font-size:9px;letter-spacing:.16em}
+#rev .seg2{display:flex;border:1px solid var(--hair);border-radius:999px;overflow:hidden}
+#rev .seg2 button{all:unset;cursor:pointer;padding:5px 11px;font-size:9.5px;letter-spacing:.08em;color:var(--dim)}
+#rev .seg2 button[aria-pressed="true"]{background:var(--steel);color:var(--bg)}
+.note{margin-top:22px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;line-height:1.7;
+  color:var(--orange-tx);border:1px dashed rgba(202,97,53,.55);border-radius:6px;padding:11px 14px;
+  max-width:80ch;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<!-- ============ COMPONENT A · THE BENCHMARK INSTRUMENT ============ -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">The benchmark</p>
+    <div class="head">
+      <h2 class="stmt">Eleven domains. <span class="d1">One score, and it is the lowest one.</span></h2>
+      <div class="prov" id="prov"></div>
+    </div>
+
+    <div class="keyrow">
+      <div class="mkey" id="mkey"></div>
+      <p class="lead" style="font-size:13.5px;max-width:46ch" id="rule"></p>
+    </div>
+
+    <!-- desktop -->
+    <div class="inst desk">
+      <div class="inst-top">
+        <span class="t public-only">Control domains · published structure, unscored</span>
+        <span class="t internal-only">Control architecture maturity · illustrative
+          <span class="warn">Internal · never published</span></span>
+      </div>
+
+      <table class="mx public-only">
+        <thead><tr>
+          <th scope="col">Control domain</th>
+          <th scope="col" class="mid">Requirement set</th>
+          <th scope="col" class="mid">Requirements</th>
+          <th scope="col">Gates</th>
+        </tr></thead>
+        <tbody id="tbSpec"></tbody>
+      </table>
+
+      <table class="mx internal-only">
+        <thead><tr>
+          <th scope="col">Control domain</th>
+          <th scope="col" class="lv">0</th><th scope="col" class="lv">1</th>
+          <th scope="col" class="lv">2</th><th scope="col" class="lv">3</th>
+          <th scope="col">Score</th>
+        </tr></thead>
+        <tbody id="tbScore"></tbody>
+      </table>
+
+      <div class="gates public-only" id="gates"></div>
+      <div class="gates assessed internal-only" id="gatesAssessed"></div>
+    </div>
+
+    <!-- mobile: summary figures, then a list that opens in place -->
+    <div class="mob">
+      <div class="summary" id="summary"></div>
+      <div class="mlist" id="mlist"></div>
+      <div class="inst" style="margin-top:16px;border-radius:var(--r-md)">
+        <div class="gates" id="gatesMob" style="border-top:0"></div>
+      </div>
+    </div>
+
+    <p class="note">Build note · Data is the Vulpine Control Architecture Benchmark v1.1 (July 2026):
+      eleven domains, 71 requirements, six domains gating T3 at level 3. The earlier concept file
+      showed ten domains and a five-domain T3 gate and has been superseded.</p>
+  </div>
+</section>
+
+<!-- ============ COMPONENT B · THE AUTHORITY MODEL ============ -->
+<section style="background:var(--deep)">
+  <div class="wrap">
+    <p class="eyebrow">Action authority</p>
+    <h2 class="stmt" style="margin-bottom:36px">Authority is granted by tier,
+      <span class="d1">and every tier has a gate.</span></h2>
+    <div class="ladder" id="ladder"></div>
+    <p class="lead" style="margin-top:22px">A workflow’s tier equals its highest-tier step. An agent that
+      can indirectly cause a T3 action through another agent is treated as holding T3 authority.</p>
+    <p class="lead" style="margin-top:14px;color:var(--steel-3)">These gates are deliberately strict.
+      We never recommend granting authority the architecture cannot yet contain.</p>
+  </div>
+</section>
+
+<div id="rev">
+  <h6>Component state</h6>
+  <span class="seg2">
+    <button id="sPub" aria-pressed="true">Public</button>
+    <button id="sInt" aria-pressed="false">Internal</button>
+  </span>
+</div>
+
+<script type="module">
+import { BENCHMARK, LEVELS, DOMAINS, TIERS, SUMMARY, SCORING_RULE } from './src/benchmark.js';
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const range = (d) => `${d.prefix}-01 <span>…</span> ${d.prefix}-${String(d.reqs).padStart(2, '0')}`;
+const gateTag = (d) => `<span class="tag${d.t3 ? ' t3' : ''}">${d.t3 ? 'T2 · T3' : 'T2'}</span>`;
+
+/* provenance block — exact copy from the publication spec */
+$('prov').innerHTML =
+  `<b>Vulpine Control Architecture Benchmark ${BENCHMARK.version}</b><br>` +
+  `${BENCHMARK.published} · eleven control domains · ${BENCHMARK.requirementTotal} requirements<br>` +
+  `Four maturity levels · three authority gates<br>` +
+  `${BENCHMARK.frameworks.slice(0, 3).join(' · ')}<br>` +
+  `${BENCHMARK.frameworks.slice(3).join(' · ')}<br>` +
+  `${BENCHMARK.cadence}`;
+
+$('rule').textContent = SCORING_RULE;
+
+$('mkey').innerHTML = LEVELS.map((l) =>
+  `<div><i class="l${l.n}"></i>${l.n} ${esc(l.name)} · <b>${esc(l.short)}</b></div>`).join('');
+
+/* public state — unscored. Every row carries different information. */
+$('tbSpec').innerHTML = DOMAINS.map((d) => `
+  <tr>
+    <th scope="row" class="dom"><code>${d.id}</code>${esc(d.name)}</th>
+    <td class="rid">${range(d)}</td>
+    <td class="rcount">${d.reqs} requirements</td>
+    <td class="gate">${gateTag(d)}</td>
+  </tr>`).join('');
+
+$('gates').innerHTML = `
+  <div><div class="lab">T0 / T1 · observe, advise</div>
+    <div class="v">Domains 1, 3, 5, 8 at level 2</div>
+    <p>The human remains the actor of record.</p></div>
+  <div><div class="lab">T2 · act, reversible</div>
+    <div class="v">All eleven at level 2</div>
+    <p>Bounded, reversible or staged, with a tested rollback path.</p></div>
+  <div><div class="lab">T3 · act, consequential</div>
+    <div class="v">Plus six at level 3</div>
+    <p>Irreversible, material or externally binding.</p></div>`;
+$('gatesMob').innerHTML = $('gates').innerHTML;
+
+/* internal variant — same data, same layout, cells filled. Figures illustrative. */
+const ILLUSTRATIVE = { 'VCA-1': 2, 'VCA-2': 1, 'VCA-3': 2, 'VCA-4': 2, 'VCA-5': 3, 'VCA-6': 2,
+  'VCA-7': 1, 'VCA-8': 2, 'VCA-9': 1, 'VCA-10': 2, 'VCA-11': 2 };
+
+$('tbScore').innerHTML = DOMAINS.map((d) => {
+  const s = ILLUSTRATIVE[d.id];
+  const cells = LEVELS.map((l) =>
+    `<td class="cell"><span class="seg" data-on="${l.n <= s ? l.n + 1 : 0}"
+      title="${d.id} · level ${l.n} · ${esc(l.name)}"></span></td>`).join('');
+  return `<tr><th scope="row" class="dom"><code>${d.id}</code>${esc(d.name)}</th>${cells}
+    <td class="score">${s}/3</td></tr>`;
+}).join('');
+
+/* Orange appears exactly twice here: on the two gates that are not met. */
+const t2Short = DOMAINS.filter((d) => ILLUSTRATIVE[d.id] < 2).length;
+const t3Short = DOMAINS.filter((d) => d.t3 && ILLUSTRATIVE[d.id] < 3).length;
+$('gatesAssessed').innerHTML = `
+  <div><div class="lab">Assessed authority</div>
+    <div class="v">T1 · advise</div>
+    <p>Domains 1, 3, 5 and 8 clear level 2.</p></div>
+  <div><div class="lab">T2 gate</div>
+    <div class="v blocked">Not met</div>
+    <p>${t2Short} domains sit at level 1.</p></div>
+  <div><div class="lab">T3 gate</div>
+    <div class="v blocked">Not met</div>
+    <p>${t3Short} of the six level-3 domains are short.</p></div>`;
+
+/* mobile: headline figures, then rows that expand in place */
+$('summary').innerHTML = `
+  <div><div class="fig">${SUMMARY.domains}</div><div class="cap">Control domains</div></div>
+  <div><div class="fig">${SUMMARY.requirements}</div><div class="cap">Requirements</div></div>
+  <div><div class="fig">${SUMMARY.t3Gated}</div><div class="cap">Gate T3 at level 3</div></div>`;
+
+$('mlist').innerHTML = DOMAINS.map((d) => `
+  <details class="mrow">
+    <summary>
+      <span class="top">${d.id}</span>${gateTag(d)}
+      <span class="nm">${esc(d.name)}</span>
+      <span class="rng">${range(d)}</span>
+      <span class="pm">+</span>
+    </summary>
+    <div class="mbody">${esc(d.descriptor)}
+      <div class="meta">${d.reqs} requirements${d.t3 ? ' · <span class="t3">Carries a level-3 bar for T3 authority</span>' : ''}</div>
+    </div>
+  </details>`).join('');
+
+/* authority ladder — orange only on the requirement identifiers */
+$('ladder').innerHTML = TIERS.map((t) => {
+  const gate = t.gateIds.length
+    ? esc(t.gate).replace(/(VCA-\d+(\s·\s\d+)*|Domains\s1\s·\s3\s·\s5\s·\s8)/, '<em>$1</em>')
+    : esc(t.gate);
+  return `<div class="rung">
+    <div class="id"><code>${t.id}</code><span class="bar"></span></div>
+    <div class="b"><h4>${esc(t.name)}</h4><p>${esc(t.meaning)}</p></div>
+    <div class="g"><span class="lab">Gate</span><span class="req">${gate}</span></div>
+  </div>`;
+}).join('');
+
+/* review toggle */
+const R = document.documentElement;
+const pub = $('sPub'), int = $('sInt');
+pub.onclick = () => { R.dataset.state = 'public'; pub.setAttribute('aria-pressed', 'true'); int.setAttribute('aria-pressed', 'false'); };
+int.onclick = () => { R.dataset.state = 'internal'; int.setAttribute('aria-pressed', 'true'); pub.setAttribute('aria-pressed', 'false'); };
+</script>
+</body>
+</html>
