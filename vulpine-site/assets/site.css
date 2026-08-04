@@ -245,3 +245,9 @@ footer{border-top:1px solid var(--hair);padding:56px 0 40px}
 .bio .ph{margin:0 0 18px}
 .bio .ph img{width:96px;height:96px;object-fit:cover;border-radius:var(--r-sm);
   filter:var(--img)}
+
+/* ---------- keyboard access ---------- */
+:focus-visible{outline:2px solid var(--orange);outline-offset:3px;border-radius:2px}
+.skip{position:absolute;left:-9999px;top:0;z-index:200;background:var(--ink);color:var(--bg);
+  padding:10px 18px;border-radius:0 0 var(--r-sm) 0;font-size:14px;text-decoration:none}
+.skip:focus{left:0}
