@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/assets/imagery/:file", "destination": "https://vulpine-website.vercel.app/assets/imagery/:file" },
+    { "source": "/assets/web/:file", "destination": "https://vulpine-website.vercel.app/assets/web/:file" }
+  ]
+}
