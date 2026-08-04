@@ -204,6 +204,48 @@ html[data-state="internal"] .public-only{display:none}
   .keyrow{flex-direction:column;align-items:flex-start}
 }
 
+/* ---------- Q06 · the supervisory gap ----------
+   Five rows, generous space. The moment it looks like a GRC tool it stops
+   reading as ours. No arrows: this is a mapping, not a workflow.
+   Orange marks the gap and nothing else. */
+.gap{border-top:1px solid var(--hair)}
+.gaphead{display:grid;grid-template-columns:30% 34% 1fr;gap:28px;padding:0 0 12px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--dim);border-bottom:1px solid var(--hair)}
+.gaprow{display:grid;grid-template-columns:30% 34% 1fr;gap:28px;padding:28px 0;
+  border-bottom:1px solid var(--hair-soft);align-items:start}
+.gaprow:last-of-type{border-bottom:0}
+/* the dates are the argument — set where a reader cannot miss them */
+.gaprow .when{font-family:var(--mono);font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--steel-3);margin-bottom:9px}
+.gaprow .when b{font-weight:400;color:var(--steel)}
+.gaprow .inst-name{font-size:17px;letter-spacing:-.02em;color:var(--steel);margin-bottom:6px}
+.gaprow .inst-note{font-size:13.5px;color:var(--mut)}
+.gaprow .miss{font-size:14.5px;color:var(--orange-tx);line-height:1.5}
+.gaprow .doms{display:flex;flex-direction:column;gap:7px;align-items:flex-start}
+.chip{font-family:var(--mono);font-size:11px;letter-spacing:.05em;border-radius:3px;
+  padding:4px 9px;border:1px solid var(--steel-2);color:var(--steel-3);white-space:nowrap}
+.chip.multi{background:var(--steel);border-color:var(--steel);color:var(--bg)}
+.chip .id{color:var(--dim);margin-right:7px}
+.chip.multi .id{color:rgba(244,242,237,.62)}
+.gaplegend{display:flex;gap:22px;flex-wrap:wrap;padding:18px 0 0;font-family:var(--mono);
+  font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
+  border-top:1px solid var(--hair)}
+.gaplegend div{display:flex;align-items:center;gap:8px}
+.gaplegend i{width:16px;height:10px;border-radius:2px;display:block}
+.gaplegend .sw-multi{background:var(--steel)}
+.gaplegend .sw-one{border:1px solid var(--steel-2)}
+.carry{font-size:clamp(17px,1.7vw,21px);line-height:1.4;letter-spacing:-.02em;color:var(--steel);
+  max-width:40ch;margin-top:30px}
+.beat{color:var(--mut);font-size:14.5px;max-width:56ch;margin-top:14px}
+.caption{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--dim);
+  margin-top:20px;max-width:60ch;line-height:1.7}
+@media (max-width:900px){
+  .gaphead{display:none}
+  .gaprow{grid-template-columns:1fr;gap:14px;padding:22px 0}
+  .gaprow .doms{flex-direction:row;flex-wrap:wrap}
+}
+
 /* ---------- review chrome · not part of the site ---------- */
 #rev{position:fixed;right:16px;bottom:16px;z-index:50;background:var(--surface);
   border:1px solid var(--hair);border-radius:14px;box-shadow:0 14px 40px rgba(21,21,27,.10);
@@ -294,6 +336,37 @@ html[data-state="internal"] .public-only{display:none}
   </div>
 </section>
 
+<!-- ============ QUESTION 06 · THE SUPERVISORY GAP ============ -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Problems we solve · Question 06</p>
+    <div class="head">
+      <h2 class="stmt">Nobody has written the rules yet.
+        <span class="d1">The evidence is being asked for anyway.</span></h2>
+      <p class="lead" style="font-size:14px">Published supervisory material either excludes agentic AI
+        by name, predates it by five years, or is explicitly non-binding. What that leaves a bank
+        holding is the question this page answers.</p>
+    </div>
+
+    <div class="gap">
+      <div class="gaphead">
+        <span>What the supervisor has published</span>
+        <span>What it does not cover</span>
+        <span>The domain that covers it</span>
+      </div>
+      <div id="gaprows"></div>
+      <div class="gaplegend">
+        <div><i class="sw-multi"></i>Domain that answers more than one gap</div>
+        <div><i class="sw-one"></i>Answers one</div>
+      </div>
+    </div>
+
+    <p class="carry" id="carry"></p>
+    <p class="beat" id="beat"></p>
+    <p class="caption" id="caption"></p>
+  </div>
+</section>
+
 <div id="rev">
   <h6>Component state</h6>
   <span class="seg2">
@@ -304,6 +377,7 @@ html[data-state="internal"] .public-only{display:none}
 
 <script type="module">
 import { BENCHMARK, LEVELS, DOMAINS, TIERS, SUMMARY, SCORING_RULE } from './src/benchmark.js';
+import { GAP_ROWS, MULTI_GAP, CARRY_LINE, SECOND_BEAT, CAPTION } from './src/supervisory-gap.js';
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -402,6 +476,27 @@ $('ladder').innerHTML = TIERS.map((t) => {
     <div class="g"><span class="lab">Gate</span><span class="req">${gate}</span></div>
   </div>`;
 }).join('');
+
+/* Q06 · the supervisory gap. No arrows — this is a mapping, not a workflow. */
+$('gaprows').innerHTML = GAP_ROWS.map((r) => {
+  const when = r.status ? `${esc(r.date)} · <b>${esc(r.status)}</b>` : `<b>${esc(r.date)}</b>`;
+  const chips = r.domains.map((d) => d.id
+    ? `<span class="chip${MULTI_GAP.has(d.id) ? ' multi' : ''}"><span class="id">${d.id}</span>${esc(d.name)}</span>`
+    : `<span class="chip">${esc(d.name)}</span>`).join('');
+  return `<div class="gaprow">
+    <div>
+      <div class="when">${when}</div>
+      <div class="inst-name">${esc(r.instrument)}</div>
+      <div class="inst-note">${esc(r.note)}</div>
+    </div>
+    <p class="miss">${esc(r.gap)}</p>
+    <div class="doms">${chips}</div>
+  </div>`;
+}).join('');
+
+$('carry').textContent = CARRY_LINE;
+$('beat').textContent = SECOND_BEAT;
+$('caption').textContent = CAPTION;
 
 /* review toggle */
 const R = document.documentElement;
