@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insights | Vulpine</title>
+<meta name="description" content="Field notes from building control architecture inside banks, payment networks, and identity platforms.">
+<link rel="icon" href="/assets/web/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/web/favicon-180x180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/components.css">
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">Insights</p>
+    <h1>What we think about deploying AI where failure is expensive.</h1>
+    <p class="lead" style="margin-top:24px">Field notes from building control architecture inside
+      banks, payment networks, and identity platforms, written for the people who have to sign the
+      risk acceptance.</p>
+  </div>
+</section>
+
+<!-- Lead article gets the full-bleed treatment rather than a third of a card row. -->
+<div class="break">
+  <img src="/assets/imagery/art-control.jpg"
+       alt="A hand resting on an industrial control lever in a dim control room"
+       onerror="this.parentElement.style.display='none'">
+  <div class="cap"><p><span>Alignment is a property you hope for. Control is a property you can prove.</span></p></div>
+</div>
+
+<section class="section--dense">
+  <div class="wrap">
+    <div class="strip">
+      <div class="row"><div class="n">01</div>
+        <h4>Why “control the hands, not the mind” beats trying to align the agent</h4>
+        <p>Alignment is a property you hope for. Control is a property you can prove. In regulated
+          environments, only one of those survives an examination.</p></div>
+      <div class="row"><div class="n">02</div>
+        <h4>The standard of evidence a bank actually needs before AI ships</h4>
+        <p>Governance documents describe intent. Examinations test evidence. The gap between the two
+          is where most AI programs stall.</p></div>
+      <div class="row"><div class="n">03</div>
+        <h4>Moving a stalled fraud-detection pilot into production in 9 weeks</h4>
+        <p>The model was never the problem. This is the shape of the work when a technically
+          successful pilot cannot get a signature, and how 9 weeks closes it.</p></div>
+    </div>
+
+    <p class="todo-block">Open · Article pages are not built. The three long-form pieces exist in full
+      on the current site and carry over unchanged — they are the strongest writing on it and were not
+      flagged in review. Routing them needs the hosting and content-maintenance decision Ryan asked
+      about on 30 Jul: where this is hosted, and how Vulpine uploads new pieces themselves.</p>
+  </div>
+</section>
+
+<section class="section--quiet on-dark">
+  <div class="wrap">
+    <p class="solo">A program with no adversarial findings is not reassuring.
+      <span class="d1">It reads as a program that was not trying.</span></p>
+  </div>
+</section>
+
+<section class="close" id="contact">
+  <div class="wrap">
+    <p class="eyebrow">Get in touch</p>
+    <h2>If a mishandled AI deployment would be an existential event, we should talk.</h2>
+    <p class="lead" style="margin:22px 0 30px">We take a small number of engagements at a time. The
+      first conversation is a scoping call, not a pitch.</p>
+    <a class="btn" href="mailto:hello@thevulpinegroup.com">Book a 30-minute call</a>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script type="module">
+  import { mount } from '/src/components.js';
+  mount('insights');
+</script>
+</body>
+</html>

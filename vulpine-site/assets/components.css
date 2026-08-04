@@ -1,0 +1,174 @@
+/* ==========================================================================
+   Proprietary components — the benchmark instrument, the authority model,
+   and the supervisory gap.
+
+   Built to VulpineComponentSpec.pdf. Verified against that spec; do not
+   restyle without re-reading it. The load-bearing rules:
+   · The maturity ramp is steel. Magnitude is not a decision.
+   · The gate column is the only orange in the public panel.
+   · No entrance animation — "a fade that fails leaves the credibility
+     section blank."
+   · Mobile is a list that opens, never a compressed table.
+   ========================================================================== */
+
+/* ---------- provenance block · mono, small, quiet ---------- */
+.prov{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--dim);
+  line-height:1.9;border-left:2px solid var(--orange);padding-left:16px}
+.prov b{color:var(--ink);font-weight:400}
+
+.chead{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,90px);align-items:end;
+  margin-bottom:clamp(32px,4vw,56px)}
+@media (max-width:900px){.chead{grid-template-columns:1fr;align-items:start}}
+
+/* ---------- maturity key · beside the table, never inside the rows ---------- */
+.keyrow{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;
+  flex-wrap:wrap;margin-bottom:14px}
+.mkey{display:flex;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.mkey div{display:flex;align-items:center;gap:7px}
+.mkey i{width:22px;height:8px;border-radius:2px;display:block;flex:0 0 auto}
+.mkey .l0{background:var(--steel-1)} .mkey .l1{background:var(--steel-2)}
+.mkey .l2{background:var(--steel-3)} .mkey .l3{background:var(--steel)}
+.mkey b{color:var(--mut);font-weight:400}
+
+/* ---------- the instrument ---------- */
+.inst{background:var(--surface);border:1px solid var(--hair);border-radius:var(--r-lg);overflow:hidden}
+.inst-top{display:flex;justify-content:space-between;align-items:baseline;gap:20px;
+  padding:20px 26px;border-bottom:1px solid var(--hair);flex-wrap:wrap}
+.inst-top .t{font-family:var(--mono);font-size:10.5px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--dim)}
+
+table.mx{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;font-size:14px}
+table.mx th,table.mx td{text-align:left;font-weight:400;padding:0}
+table.mx thead th{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dim);padding:13px 0 11px;border-bottom:1px solid var(--hair)}
+table.mx thead th:first-child{padding-left:26px;width:38%}
+table.mx thead th.mid{width:23%}
+table.mx thead th:last-child{text-align:right;padding-right:26px;width:16%}
+table.mx tbody tr{border-bottom:1px solid var(--hair-soft)}
+table.mx tbody tr:last-child{border-bottom:0}
+
+.dom{padding:14px 18px 14px 26px;color:var(--steel);white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+.dom code{font-family:var(--mono);font-size:11px;color:var(--dim);margin-right:12px}
+/* requirement identifiers are fixed strings — mono, steel, never restyled */
+.rid{font-family:var(--mono);font-size:12px;color:var(--steel);letter-spacing:.04em;
+  padding:14px 10px 14px 0}
+.rid span{color:var(--dim)}
+.rcount{font-family:var(--mono);font-size:12px;color:var(--mut);letter-spacing:.04em;
+  padding:14px 10px 14px 0}
+
+/* gate tag · two states only, and the only orange in the panel */
+td.gate{text-align:right;padding:12px 26px 12px 10px;white-space:nowrap}
+.tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;
+  border-radius:3px;padding:3px 7px;display:inline-block;border:1px solid var(--steel-2);
+  color:var(--steel-3)}
+.tag.t3{border-color:var(--orange);color:var(--orange-tx)}
+
+/* ---------- authority gate strip · closes the argument ---------- */
+.gates{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;
+  background:var(--hair);border-top:1px solid var(--hair)}
+.gates > div{background:var(--surface);padding:18px 22px}
+.gates .lab{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--orange-tx);margin-bottom:8px}
+.gates .v{font-size:16px;letter-spacing:-.015em;margin-bottom:5px;color:var(--steel)}
+.gates p{color:var(--mut);font-size:13px}
+
+/* ---------- responsive instrument · summary, then a list that opens ---------- */
+.mob{display:none}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hair);
+  border:1px solid var(--hair);border-radius:var(--r-md);overflow:hidden;margin-bottom:16px}
+.summary > div{background:var(--surface);padding:16px 18px}
+.summary .fig{font-size:26px;letter-spacing:-.03em;color:var(--steel)}
+.summary .cap{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--dim);margin-top:4px;line-height:1.5}
+.mlist{border:1px solid var(--hair);border-radius:var(--r-md);overflow:hidden;background:var(--surface)}
+.mrow{border-bottom:1px solid var(--hair-soft)}
+.mrow:last-child{border-bottom:0}
+.mrow summary{list-style:none;cursor:pointer;padding:14px 16px;display:grid;
+  grid-template-columns:1fr auto;gap:10px 12px;align-items:center}
+.mrow summary::-webkit-details-marker{display:none}
+.mrow .top{grid-column:1;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--dim)}
+.mrow .tag{grid-column:2;grid-row:1}
+.mrow .nm{grid-column:1/-1;font-size:15px;color:var(--steel);letter-spacing:-.015em}
+.mrow .rng{grid-column:1;font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.04em}
+.mrow .pm{grid-column:2;font-family:var(--mono);font-size:15px;color:var(--dim);line-height:1}
+.mrow[open] .pm{visibility:hidden}
+.mbody{padding:0 16px 16px;color:var(--mut);font-size:13.5px;line-height:1.6}
+.mbody .meta{margin-top:8px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--dim)}
+.mbody .meta .t3{color:var(--orange-tx)}
+@media (max-width:900px){
+  .desk{display:none}
+  .mob{display:block}
+  .keyrow{flex-direction:column;align-items:flex-start}
+}
+
+/* ---------- authority ladder ---------- */
+.ladder{display:grid;gap:1px;background:var(--hair);border:1px solid var(--hair);
+  border-radius:var(--r-md);overflow:hidden}
+.rung{background:var(--surface);display:grid;grid-template-columns:140px 1fr 260px}
+.rung .rid-col{padding:22px;border-right:1px solid var(--hair);display:flex;flex-direction:column;
+  gap:10px;justify-content:center}
+.rung .rid-col code{font-family:var(--mono);font-size:16px;letter-spacing:.06em;color:var(--steel)}
+.rung .rid-col .bar{height:4px;border-radius:2px}
+.rung:nth-child(1) .bar{background:var(--steel-1)}
+.rung:nth-child(2) .bar{background:var(--steel-2)}
+.rung:nth-child(3) .bar{background:var(--steel-3)}
+.rung:nth-child(4) .bar{background:var(--steel)}
+.rung .b{padding:22px}
+.rung .b h4{font-size:17px;margin-bottom:6px;letter-spacing:-.02em;color:var(--steel)}
+.rung .b p{color:var(--mut);font-size:14px;max-width:52ch}
+.rung .g{padding:22px;border-left:1px solid var(--hair);display:flex;flex-direction:column;
+  justify-content:center;gap:7px}
+.rung .g .lab{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--dim)}
+/* orange only on the requirement identifiers; the sentence stays steel */
+.rung .g .req{font-size:13.5px;color:var(--steel-3)}
+.rung .g .req em{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--orange-tx)}
+@media (max-width:900px){
+  .rung{grid-template-columns:1fr}
+  .rung .rid-col{border-right:0;border-bottom:1px solid var(--hair);flex-direction:row;
+    align-items:center;gap:16px}
+  .rung .rid-col .bar{width:64px}
+  .rung .g{border-left:0;border-top:1px solid var(--hair)}
+}
+
+/* ---------- Q06 · the supervisory gap ---------- */
+.gapc{border-top:1px solid var(--hair)}
+.gaphead{display:grid;grid-template-columns:30% 34% 1fr;gap:28px;padding:0 0 12px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--dim);border-bottom:1px solid var(--hair)}
+.gaprow{display:grid;grid-template-columns:30% 34% 1fr;gap:28px;padding:28px 0;
+  border-bottom:1px solid var(--hair-soft);align-items:start}
+.gaprow:last-of-type{border-bottom:0}
+/* the dates are the argument */
+.gaprow .when{font-family:var(--mono);font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--steel-3);margin-bottom:9px}
+.gaprow .when b{font-weight:400;color:var(--steel)}
+.gaprow .iname{font-size:17px;letter-spacing:-.02em;color:var(--steel);margin-bottom:6px}
+.gaprow .inote{font-size:13.5px;color:var(--mut)}
+.gaprow .miss{font-size:14.5px;color:var(--orange-tx);line-height:1.5}
+.gaprow .doms{display:flex;flex-direction:column;gap:7px;align-items:flex-start}
+.chip{font-family:var(--mono);font-size:11px;letter-spacing:.05em;border-radius:3px;
+  padding:4px 9px;border:1px solid var(--steel-2);color:var(--steel-3);white-space:nowrap}
+.chip.multi{background:var(--steel);border-color:var(--steel);color:var(--bg)}
+.chip .cid{color:var(--dim);margin-right:7px}
+.chip.multi .cid{color:rgba(244,242,237,.62)}
+.gaplegend{display:flex;gap:22px;flex-wrap:wrap;padding:18px 0 0;font-family:var(--mono);
+  font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
+  border-top:1px solid var(--hair)}
+.gaplegend div{display:flex;align-items:center;gap:8px}
+.gaplegend i{width:16px;height:10px;border-radius:2px;display:block}
+.gaplegend .sw-multi{background:var(--steel)}
+.gaplegend .sw-one{border:1px solid var(--steel-2)}
+.carry{font-size:clamp(17px,1.7vw,21px);line-height:1.4;letter-spacing:-.02em;color:var(--steel);
+  max-width:40ch;margin-top:30px}
+.beat{color:var(--mut);font-size:14.5px;max-width:56ch;margin-top:14px}
+.caption{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--dim);
+  margin-top:20px;max-width:60ch;line-height:1.7}
+@media (max-width:900px){
+  .gaphead{display:none}
+  .gaprow{grid-template-columns:1fr;gap:14px;padding:22px 0}
+  .gaprow .doms{flex-direction:row;flex-wrap:wrap}
+}

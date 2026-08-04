@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found | Vulpine</title>
+<link rel="icon" href="/assets/web/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/web/favicon-180x180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/components.css">
+</head>
+<body>
+<div id="site-header"></div>
+<section class="section--quiet">
+  <div class="wrap">
+    <p class="eyebrow">404</p>
+    <h1 class="solo">This page doesn&rsquo;t exist. <span class="d1">The page you&rsquo;re looking for was
+      moved or never shipped.</span></h1>
+    <p style="margin-top:32px"><a class="btn" href="/">Head back to the front door</a></p>
+  </div>
+</section>
+<div id="site-footer"></div>
+<script type="module">
+  import { mount } from '/src/components.js';
+  mount('404');
+</script>
+</body>
+</html>
