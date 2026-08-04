@@ -27,7 +27,7 @@ export function header(current) {
   const link = (href, label, key) =>
     `<a class="lnk" href="${href}"${current === key ? ' aria-current="page"' : ''}>${label}</a>`;
   return `<header><div class="wrap">
-    <a class="logo" href="/">Vulpine<sup>◤</sup></a>
+    <a class="logo" href="/" aria-label="Vulpine, home"><img src="/assets/logos/vulpine-logo-primary-dark.svg" alt="Vulpine"></a>
     <nav>
       ${link('/who-we-are.html', 'Who we are', 'who')}
       ${link('/problems-we-solve.html', 'Problems we solve', 'problems')}
@@ -41,7 +41,7 @@ export function footer() {
   return `<footer><div class="wrap">
     <div class="fgrid">
       <div>
-        <span class="logo" style="font-size:17px">Vulpine<sup>◤</sup></span>
+        <a class="logo logo--footer" href="#top" aria-label="Vulpine, back to top"><img src="/assets/logos/vulpine-logo-primary-dark.svg" alt="Vulpine"></a>
         <p style="margin-top:14px">Independent AI security and strategy advisory. Securing enterprise
           AI into production, where the stakes are highest.</p>
       </div>

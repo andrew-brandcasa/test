@@ -81,9 +81,9 @@ section{padding:clamp(64px,8vw,120px) 0}
 header{position:sticky;top:0;z-index:100;background:color-mix(in srgb,var(--bg) 84%,transparent);
   backdrop-filter:blur(12px);border-bottom:1px solid var(--hair-soft)}
 header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:26px}
-.logo{display:flex;align-items:center;gap:3px;font-size:19px;font-weight:500;letter-spacing:-.035em;
-  text-decoration:none}
-.logo sup{color:var(--orange);font-size:11px;top:-.6em;position:relative}
+.logo{display:flex;align-items:center;text-decoration:none}
+.logo img{height:26px;width:auto;display:block}
+.logo--footer img{height:22px}
 nav{display:flex;align-items:center;gap:26px;font-size:14.5px;color:var(--mut)}
 nav a{text-decoration:none}
 nav a[aria-current="page"]{color:var(--ink)}
@@ -100,9 +100,10 @@ nav a[aria-current="page"]{color:var(--ink)}
    Photography is structural, not decorative. Ryan: the documentary images
    "are the only elements on the site that could not be a template." */
 .hero{padding:clamp(72px,10vw,150px) 0 clamp(60px,7vw,110px);position:relative;overflow:hidden}
-.hero .bgimg{position:absolute;inset:0 0 auto auto;width:58%;height:100%;object-fit:cover;
+.hero .bgimg,.hero video{position:absolute;inset:0 0 auto auto;width:58%;height:100%;object-fit:cover;
   filter:var(--img);opacity:.5;mask-image:linear-gradient(to right,transparent,#000 42%);
   -webkit-mask-image:linear-gradient(to right,transparent,#000 42%)}
+@media (prefers-reduced-motion:reduce){.hero video{display:none}.hero .bgimg{display:block}}
 .hero .wrap{position:relative}
 .hero h1{font-size:clamp(36px,6.2vw,80px);line-height:1.03;letter-spacing:-.042em;max-width:16ch}
 .hero h1 em{font-style:normal;color:var(--orange)}
@@ -225,3 +226,22 @@ footer{border-top:1px solid var(--hair);padding:56px 0 40px}
 .todo-block{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;line-height:1.7;
   color:var(--orange-tx);border:1px dashed rgba(202,97,53,.55);border-radius:6px;
   padding:12px 15px;max-width:80ch;text-transform:uppercase;margin-top:20px}
+
+/* ---------- experience band · the Who We Are visual pause ----------
+   Replaces the deleted statistics module. Conveys scale without a figure. */
+.expband{position:relative;padding:clamp(80px,11vw,170px) 0;overflow:hidden}
+.expband .bg{position:absolute;inset:0;background-size:cover;background-position:center;
+  filter:var(--img);opacity:.35}
+.expband .wrap{position:relative}
+.expband p{color:var(--ink);font-size:clamp(20px,2.6vw,32px);letter-spacing:-.028em;
+  line-height:1.25;max-width:26ch}
+
+/* ---------- problems page hero media ---------- */
+.phero-media{margin-top:clamp(30px,4vw,52px)}
+.phero-media img{width:100%;max-height:clamp(260px,36vw,460px);object-fit:cover;
+  filter:var(--img);border-radius:var(--r-md)}
+
+/* ---------- bio headshots ---------- */
+.bio .ph{margin:0 0 18px}
+.bio .ph img{width:96px;height:96px;object-fit:cover;border-radius:var(--r-sm);
+  filter:var(--img)}

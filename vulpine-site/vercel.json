@@ -1,6 +1,8 @@
 {
   "rewrites": [
-    { "source": "/assets/imagery/:file", "destination": "https://vulpine-website.vercel.app/assets/imagery/:file" },
-    { "source": "/assets/web/:file", "destination": "https://vulpine-website.vercel.app/assets/web/:file" }
+    { "source": "/assets/imagery/:file", "destination": "https://vulpine-staging.vercel.app/assets/imagery/:file" },
+    { "source": "/assets/logos/:file", "destination": "https://vulpine-staging.vercel.app/assets/logos/:file" },
+    { "source": "/assets/video/:file", "destination": "https://vulpine-staging.vercel.app/assets/video/:file" },
+    { "source": "/assets/web/:file", "destination": "https://vulpine-staging.vercel.app/assets/web/:file" }
   ]
 }
