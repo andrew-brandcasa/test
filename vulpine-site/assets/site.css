@@ -160,33 +160,37 @@ nav a[aria-current="page"]{color:var(--ink)}
    legible the footage read as a stain rather than a photograph, and the
    section arrived washed out. The photography still runs the page — it does
    it in the full-bleed breaks, where it is not fighting text for contrast. */
-.hero{position:relative;overflow:hidden;padding:clamp(72px,9vw,132px) 0 clamp(84px,10vw,150px)}
-.hero .in{position:relative;z-index:2;max-width:var(--w);margin:0 auto;padding:0 var(--pad)}
-/* the photograph returns as a defined panel on the right rather than a
-   full-bleed wash behind the headline. Behind the type it had to be faded so
-   far to keep ink readable that it looked like a stain; given its own edge it
-   can run at full strength and the type keeps clean paper. */
-.hero-art{position:absolute;top:0;bottom:0;right:0;width:min(46%,720px);z-index:1;
-  border-radius:var(--r-lg) 0 0 var(--r-lg);overflow:hidden}
-.hero-art img{width:100%;height:100%;object-fit:cover;filter:var(--img)}
-.hero-art .brandmark{right:-14%;bottom:auto;top:50%;transform:translateY(-50%);
-  width:86%;opacity:.9;mix-blend-mode:normal}
-/* the cream edge stops the panel cutting hard across the headline measure */
-.hero-art::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:linear-gradient(90deg,var(--bg) 0%,transparent 28%)}
-@media (max-width:1100px){.hero-art{width:38%}}
+/* Every value here is lifted from the approved production stylesheet's
+   light theme, not chosen. An earlier pass deleted this block outright on the
+   judgement that it looked washed out; that judgement was not asked for, and
+   the treatment it replaced is the one already signed off. Three scrims: a
+   horizontal wash, a vertical wash from the base, and a top band that holds
+   the sticky header. */
+.hero{position:relative}
+.hero .media{position:relative;height:min(76svh,780px);min-height:440px;overflow:hidden;
+  background:var(--bg)}
+.hero .media video,.hero .media img{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;opacity:.62;
+  filter:grayscale(1) sepia(.5) saturate(1.35) hue-rotate(-8deg) brightness(1.62) contrast(.82)}
+.hero .media .g1{position:absolute;inset:0;
+  background:linear-gradient(90deg,#f4f2edf0 16%,#f4f2eda8 48%,#f4f2ed1f)}
+.hero .media .g2{position:absolute;inset:0;
+  background:linear-gradient(0deg,rgba(244,242,237,.92) 0%,transparent 46%)}
+/* the band the sticky header sits over */
+.hero .media::before{content:"";position:absolute;inset:0 0 auto;height:190px;z-index:1;
+  background:linear-gradient(180deg,rgba(244,242,237,.8) 0%,rgba(244,242,237,.34) 55%,transparent 100%)}
+@media (prefers-reduced-motion:reduce){.hero .media video{display:none}}
+.hero .brandmark{opacity:.12}
+.hero-stack{position:absolute;left:0;right:0;bottom:0;z-index:3;
+  padding:clamp(28px,4vw,56px) 0 clamp(32px,4vw,60px)}
+.hero-stack .in{max-width:var(--w);margin:0 auto;padding:0 var(--pad)}
 .hero .eyebrow{color:var(--sahara)}
 .hero h1{font-size:clamp(2.25rem,5.6vw,5rem);line-height:1.02;letter-spacing:-.03em;
   max-width:17ch;color:var(--ink)}
 .hero h1 em{font-style:normal;color:var(--orange)}
 .hero .lead{margin:clamp(18px,2.2vw,28px) 0 clamp(26px,3vw,38px);color:var(--mut);max-width:52ch}
 .hero .cta{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
-@media (max-width:860px){
-  .hero-art{position:relative;width:auto;height:clamp(200px,42vw,300px);
-    margin:0 var(--pad) clamp(28px,5vw,40px);border-radius:var(--r-lg)}
-  .hero-art::before{display:none}
-  .hero{display:flex;flex-direction:column-reverse;padding-top:clamp(32px,6vw,56px)}
-}
+@media (max-width:700px){.hero .media{height:auto;min-height:min(76svh,620px)}}
 .page-hero{padding:clamp(64px,8vw,120px) 0 clamp(32px,4vw,56px)}
 .page-hero h1{font-size:clamp(2.25rem,5.6vw,5rem);line-height:1.02;letter-spacing:-.03em;max-width:18ch}
 
