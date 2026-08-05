@@ -164,4 +164,11 @@
 .cstatus{margin-top:14px;font-size:14.5px;line-height:1.5;max-width:56ch}
 .cstatus:empty{display:none}
 .cstatus.err{color:var(--orange-tx)}
+/* success takes steel, not green: the palette has no green and one is not
+   being invented for a single confirmation line */
+.cstatus.ok{color:var(--steel-3)}
+.cstatus a{color:inherit}
+.btn[disabled]{opacity:.6;cursor:default;transform:none}
+/* honeypot. Off-screen rather than display:none, which some bots skip. */
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 @media (max-width:700px){.cgrid{grid-template-columns:1fr}}

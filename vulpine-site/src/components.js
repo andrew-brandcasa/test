@@ -198,12 +198,14 @@ export function supervisoryGap() {
 /* ------------------------------------------------------- contact form */
 
 /**
- * The form posts to FORM_ENDPOINT. Until that is set to a real endpoint it
- * refuses to submit and says so, rather than clearing the fields and letting
- * the sender believe an enquiry arrived. A form that silently swallows a
- * new-business enquiry is worse than no form.
+ * The form posts JSON to our own endpoint, which relays it through Resend.
+ * The API key stays server-side; nothing sensitive reaches the browser.
+ *
+ * Every failure path says what went wrong and repeats the mailto, rather than
+ * clearing the fields and letting the sender believe an enquiry arrived. A
+ * form that silently swallows a new-business enquiry is worse than no form.
  */
-export const FORM_ENDPOINT = ''; // e.g. https://formspree.io/f/xxxxxxx
+export const FORM_ENDPOINT = '/api/contact';
 
 export function contactForm() {
   const field = (id, label, type, extra = '') => `<p class="fld">
@@ -213,7 +215,7 @@ export function contactForm() {
       : `<input id="${id}" name="${id}" type="${type}" ${extra}>`}
   </p>`;
 
-  return `<form class="cform" method="post"${FORM_ENDPOINT ? ` action="${FORM_ENDPOINT}"` : ''}>
+  return `<form class="cform" method="post" action="${FORM_ENDPOINT}" novalidate>
     <div class="cgrid">
       ${field('name', 'Your name', 'text', 'required autocomplete="name"')}
       ${field('email', 'Work email', 'email', 'required autocomplete="email"')}
@@ -221,6 +223,10 @@ export function contactForm() {
       ${field('role', 'Your role', 'text', 'autocomplete="organization-title"')}
     </div>
     ${field('message', 'What are you trying to deploy, and what is blocking it?', 'textarea', 'required')}
+    <p class="hp" aria-hidden="true">
+      <label for="company">Company</label>
+      <input id="company" name="company" type="text" tabindex="-1" autocomplete="off">
+    </p>
     <div class="cfoot">
       <button class="btn" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>Send</button>
       <span class="cnote">Or email <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a> directly.</span>
@@ -229,16 +235,60 @@ export function contactForm() {
   </form>`;
 }
 
+/* Every one of these names the next action. "Something went wrong" leaves a
+   prospective client with nowhere to go. */
+const FALLBACK = ` Please email <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a> and we will reply the same day.`;
+const MESSAGES = {
+  not_configured: 'This form is not connected yet.' + FALLBACK,
+  send_failed: 'We could not send that just now.' + FALLBACK,
+  offline: 'That did not reach us, which usually means the connection dropped.' + FALLBACK,
+};
+
 function wireForm() {
   const form = document.querySelector('.cform');
   if (!form) return;
   const status = form.querySelector('.cstatus');
-  form.addEventListener('submit', (e) => {
-    if (FORM_ENDPOINT) return; // let the browser post it
+  const button = form.querySelector('button[type="submit"]');
+
+  const say = (kind, html) => { status.className = 'cstatus ' + kind; status.innerHTML = html; };
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    status.className = 'cstatus err';
-    status.textContent = 'This form is not connected yet. Please email '
-      + CONTACT_EMAIL + ' and we will reply the same day.';
+    if (button.disabled) return;
+
+    const data = Object.fromEntries(new FormData(form).entries());
+    if (!data.name?.trim() || !data.email?.trim() || !data.message?.trim()) {
+      return say('err', 'Please fill in your name, work email and a message.');
+    }
+
+    button.disabled = true;
+    const label = button.lastChild;
+    const original = label.textContent;
+    label.textContent = 'Sending';
+    say('', '');
+
+    try {
+      const r = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      /* a non-JSON body means the request never reached the function —
+         usually the endpoint is not deployed rather than the send failing */
+      const out = await r.json().catch(() => ({}));
+
+      if (r.ok) {
+        form.querySelectorAll('input, textarea').forEach((el) => { el.value = ''; });
+        say('ok', 'Thank you. That has reached us, and we will reply the same day.');
+      } else {
+        say('err', MESSAGES[out.error] || out.error || MESSAGES.send_failed);
+      }
+    } catch {
+      say('err', MESSAGES.offline);
+    } finally {
+      button.disabled = false;
+      label.textContent = original;
+    }
   });
 }
 

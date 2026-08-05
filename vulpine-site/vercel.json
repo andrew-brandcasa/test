@@ -1,5 +1,7 @@
 {
-  "outputDirectory": ".",
+  "//": "The static pages are copied into dist so that api/ stays out of the served output and is built as a Serverless Function instead of downloadable source. The project was created with the Vite preset; this buildCommand overrides it.",
+  "buildCommand": "mkdir -p dist && cp -r *.html assets src dist/",
+  "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
