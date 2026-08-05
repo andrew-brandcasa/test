@@ -31,7 +31,6 @@
 .mkey .l2{background:var(--steel-3)} .mkey .l3{background:var(--steel)}
 .mkey b{color:var(--mut);font-weight:400}
 
-/* ---------- the instrument ---------- */
 /* ---------- the instrument ----------
    Published documentation, not a UI widget: no card, no border, no radius.
    A rule above, hairlines between rows, a rule below. The domain name is the
