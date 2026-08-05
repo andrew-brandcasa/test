@@ -39,7 +39,9 @@
 
 /* Dark is a section treatment, not a site mode. */
 .on-dark{
-  --bg:#0A0A0B; --deep:#121214; --surface:#151517;
+  /* Cold Steel band, not near-black: the single-line sections stay on
+     palette instead of jumping to a foreign dark mode mid-page. */
+  --bg:#2B3B4B; --deep:#24323F; --surface:#31424F;
   --ink:#F2F1EE; --mut:#B9BDC9; --dim:#9DA2B3;
   --hair:rgba(242,241,238,.16); --hair-soft:rgba(242,241,238,.09);
   background:var(--bg); color:var(--ink);
@@ -207,7 +209,7 @@ nav a[aria-current="page"]{color:var(--ink)}
 
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--hair);padding:56px 0 40px}
-.fgrid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
+.fgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px}
 .fgrid h5{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
   color:var(--dim);font-weight:400;margin:0 0 14px}
 .fgrid a{display:block;color:var(--mut);font-size:14px;text-decoration:none;margin-bottom:9px}
@@ -251,3 +253,28 @@ footer{border-top:1px solid var(--hair);padding:56px 0 40px}
 .skip{position:absolute;left:-9999px;top:0;z-index:200;background:var(--ink);color:var(--bg);
   padding:10px 18px;border-radius:0 0 var(--r-sm) 0;font-size:14px;text-decoration:none}
 .skip:focus{left:0}
+
+/* ---------- editorial index · lead + list (home insights) ---------- */
+.edix{display:grid;grid-template-columns:1.6fr 1fr;gap:clamp(28px,4vw,56px);margin-top:44px;
+  border-top:1px solid var(--hair);padding-top:34px}
+.edix a{text-decoration:none;display:block}
+.edix .meta{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim)}
+.edix-lead img{width:100%;height:clamp(240px,26vw,360px);object-fit:cover;filter:var(--img);
+  border-radius:var(--r-md)}
+.edix-lead .txt{padding-top:18px}
+.edix-lead h4{font-size:clamp(19px,2vw,26px);line-height:1.25;letter-spacing:-.025em;
+  color:var(--steel);margin-top:8px;max-width:26ch}
+.edix-lead .dek{color:var(--mut);font-size:14.5px;margin-top:10px;max-width:52ch}
+.edix-list{display:flex;flex-direction:column}
+.edix-list > a{padding:18px 0;border-bottom:1px solid var(--hair-soft)}
+.edix-list > a:first-child{padding-top:4px}
+.edix-list h4{font-size:16.5px;line-height:1.35;letter-spacing:-.02em;color:var(--steel);margin-top:7px}
+.edix-list .all{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--orange-tx);border-bottom:0;padding-top:20px}
+@media (max-width:860px){.edix{grid-template-columns:1fr}}
+
+/* ---------- micro-polish ---------- */
+h1,h2,h3,.stmt,.solo{text-wrap:balance}
+.summary .fig,.rcount,.rid{font-variant-numeric:tabular-nums}
+.btn:active{transform:scale(.98)}

@@ -45,13 +45,11 @@ export function footer() {
         <p style="margin-top:14px">Independent AI security and strategy advisory. Securing enterprise
           AI into production, where the stakes are highest.</p>
       </div>
-      <div><h5>Firm</h5>
+      <div><h5>Explore</h5>
         <a href="/who-we-are.html">Who we are</a>
-        <a href="/#benchmark">Control architecture</a>
-      </div>
-      <div><h5>Thinking</h5>
-        <a href="/insights.html">Insights</a>
         <a href="/problems-we-solve.html">Problems we solve</a>
+        <a href="/insights.html">Insights</a>
+        <a href="/#benchmark">The benchmark</a>
       </div>
       <div><h5>Contact</h5>
         <a href="${CTA_HREF}">${CTA_LABEL}</a>
