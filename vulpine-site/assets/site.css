@@ -154,13 +154,7 @@ nav a[aria-current="page"]{color:var(--ink)}
 @media (min-width:861px){.mnav{display:none}}
 
 /* ---------- hero ----------
-   Type on a clean ground with the mark carrying the right-hand side, matching
-   the approved site. The previous build put the documentary video behind the
-   headline under two cream scrims; at the opacity needed to keep ink type
-   legible the footage read as a stain rather than a photograph, and the
-   section arrived washed out. The photography still runs the page — it does
-   it in the full-bleed breaks, where it is not fighting text for contrast. */
-/* Every value here is lifted from the approved production stylesheet's
+   Every value here is lifted from the approved production stylesheet's
    light theme, not chosen. An earlier pass deleted this block outright on the
    judgement that it looked washed out; that judgement was not asked for, and
    the treatment it replaced is the one already signed off. Three scrims: a
