@@ -33,7 +33,10 @@ const esc = (s) => String(s).replace(/[&<>]/g, (c) =>
    worse than passing one bad address to Resend, which validates properly. */
 const looksLikeEmail = (s) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
 
-export default async function handler(req, res) {
+/* CommonJS on purpose. There is no package.json in this project, so Node
+   treats a bare .js file as CommonJS and an `export default` here would fail
+   to load at runtime. fetch is global on the Node 24 runtime. */
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed' });
