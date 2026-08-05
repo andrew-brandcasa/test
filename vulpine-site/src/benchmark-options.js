@@ -248,6 +248,54 @@ export function wireTiers(root = document) {
   });
 }
 
+/* ============================================================ option E
+   Modelled on the Tailscale pricing comparison, rendered rather than guessed.
+   Its mechanics, and why they fit:
+   · Each row is a name with a small grey descriptor line beneath it. That is
+     the fix for eleven domains arriving as eleven names a reader cannot
+     evaluate — the descriptors already exist in the data and had nowhere to go.
+   · Tier columns carry plain text values, not graphics: a literal value where
+     there is one, an en dash where there is not.
+   · Hairline dividers, generous row height, no card, no heavy border.
+   No grouping headers: Tailscale groups its rows into named sections, but the
+   benchmark defines eleven domains and no groups, and inventing them would be
+   making something up. */
+export function optionSpec() {
+  /* data-t carries the tier label so the stacked mobile rows stay readable
+     without duplicating the markup */
+  const val = (lvl, tier) => lvl === null
+    ? `<td class="sv none" data-t="${tier}">&ndash;</td>`
+    : `<td class="sv${lvl === 3 ? ' hi' : ''}" data-t="${tier}">Level ${lvl}<span>${esc(LEVELS[lvl].name)}</span></td>`;
+
+  const rows = DOMAINS.map((d) => {
+    const r = req(d);
+    return `<tr>
+      <th scope="row" class="sd">
+        <span class="sd-nm"><code>${d.id}</code>${esc(d.name)}</span>
+        <span class="sd-de">${esc(d.descriptor)}</span>
+      </th>
+      <td class="sn">${d.reqs}</td>
+      ${val(r.t01, 'T0 / T1')}${val(r.t2, 'T2')}${val(r.t3, 'T3')}
+    </tr>`;
+  }).join('');
+
+  return `<div class="spec">
+    <table class="stbl">
+      <thead>
+        <tr>
+          <th scope="col" class="sh-dom">Control domain</th>
+          <th scope="col" class="sh-n">Reqs</th>
+          <th scope="col"><b>T0 / T1</b><em>observe, advise</em></th>
+          <th scope="col"><b>T2</b><em>act, reversible</em></th>
+          <th scope="col"><b>T3</b><em>act, consequential</em></th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <p class="opt-note">${esc(SCORING_RULE)}</p>
+  </div>`;
+}
+
 export function provenance() {
   return `<div class="prov">
     <b>Vulpine Control Architecture Benchmark ${BENCHMARK.version}</b><br>
@@ -266,6 +314,7 @@ export function mountOptions() {
   const put = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
   put('o-prov', provenance());
   put('o-levels', levelKey());
+  put('o-e', optionSpec());
   put('o-d', optionTiered());
   put('o-a', optionMatrix());
   put('o-b', optionCards());
