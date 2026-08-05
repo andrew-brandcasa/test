@@ -89,28 +89,32 @@ export function footer() {
 const T3_GATED = DOMAINS.filter((d) => d.t3);
 
 export function benchmarkInstrument() {
+  /* the whitespace between these spans is load-bearing: without it the figure
+     and its label ran together as "11control domains" for anyone copying the
+     text or reading it with a screen reader */
   const figures = [
     [DOMAINS.length, 'control domains'],
     [BENCHMARK.requirementTotal, 'requirements'],
     [LEVELS.length, 'maturity levels'],
-  ].map(([n, label]) => `<div class="fig"><b>${n}</b><span>${label}</span></div>`).join('');
+  ].map(([n, label]) => `<div class="fig"><b>${n}</b> <span>${label}</span></div>`).join('');
 
+  /* unordered: these six are a set, not a sequence. Numbering them implied a
+     first and a sixth that do not exist. */
   const gated = T3_GATED.map((d) => `<li>
     <span class="gd-id">${d.id}</span>
-    <span class="gd-nm">${esc(d.name)}</span>
+    <span class="gd-nm">${esc(d.name)}.</span>
     <span class="gd-de">${esc(d.descriptor)}</span>
   </li>`).join('');
 
   return `<div class="bench">
     <div class="figs">${figures}</div>
     <div class="gate-block">
-      <p class="lead gate-lead">Six of the eleven have to be independently proven &mdash; not just
-        switched on &mdash; before an agent is allowed to do anything irreversible: move money,
-        contact customers at scale, change production, delete data.</p>
-      <ol class="gated">${gated}</ol>
-      <p class="rule-note">${esc(SCORING_RULE)} Mapped to
-        ${BENCHMARK.frameworks.join(', ').replace(/, ([^,]*)$/, ' and $1')}.
-        ${esc(BENCHMARK.cadence).toLowerCase()}.</p>
+      <p class="lead gate-lead">Before an agent can do anything it cannot take back, six of the
+        eleven have to be proven, not just switched on. Moving money. Contacting customers at
+        scale. Changing production. Deleting data.</p>
+      <ul class="gated">${gated}</ul>
+      <p class="rule-note">Each domain scores at its weakest requirement, never the average.
+        Built against OWASP, MITRE ATLAS, NIST and the EU AI Act, and reviewed every quarter.</p>
     </div>
   </div>`;
 }
