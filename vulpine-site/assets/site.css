@@ -285,6 +285,20 @@ footer{border-top:1px solid var(--hair);padding:56px 0 40px}
 .skip:focus{left:0}
 
 /* ---------- editorial index · lead + list (home insights) ---------- */
+/* ---------- brand mark overlay ----------
+   The mark set large and quiet, bleeding off the right edge of a section.
+   Uses currentColor so it inherits the band's ink. */
+.has-mark{position:relative;overflow:hidden}
+.has-mark > .wrap{position:relative;z-index:1}
+.brandmark{position:absolute;top:50%;right:clamp(24px,5vw,96px);
+  transform:translateY(-50%);width:clamp(150px,20vw,290px);aspect-ratio:73/67;
+  color:currentColor;opacity:.07;pointer-events:none;z-index:0;
+  -webkit-mask:url(/assets/logos/vulpine-mark.svg) no-repeat center/contain;
+  mask:url(/assets/logos/vulpine-mark.svg) no-repeat center/contain;
+  background:currentColor}
+.on-dark .brandmark{opacity:.10}
+@media (max-width:700px){.brandmark{opacity:.055;width:min(42vw,190px);right:16px}}
+
 .rule-note{font-size:13.5px;margin-top:18px;max-width:60ch}
 
 .inst-top .mkey{gap:16px}
