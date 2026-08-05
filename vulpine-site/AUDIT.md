@@ -188,6 +188,32 @@ grayscale ramp is explicitly cool ("No warm greys, ever") and names Cloud
 `#EDEFF7` as the light surface, while the approved light mode uses a warm
 cream. The two documents disagree; I have followed the approved light mode.
 
+## 6e · Brand system — applied, and what is blocked
+
+Applied from the guidelines: the published digital scale (board 27 — H1 resolves
+to 80px at 1440, body 17/1.5/−1%, lede 22/1.6), the layout constants (board 31 —
+1240px container, fluid 20→64px margins, 76px header, 80→150px section rhythm),
+and the motion tokens (board 38 — `cubic-bezier(.4,0,.2,1)`, 0.2/0.3/0.4/0.7s,
+button lift −2px, everything off under `prefers-reduced-motion`).
+
+**The seam grid (board 32) was already in the build** — the bios and the
+authority ladder use its exact construction: 1px grid-gap with the hairline
+showing through and a 1px outer frame, cells carrying no borders of their own.
+
+**Blocked — the shipped graphics do not exist.** Board 33 and 34 require
+`assets/graphics/` files to be used as shipped, and board 34 says never to
+redraw the geometry. Of the named files only `vulpine-pattern-orange-black.svg`
+and `vulpine-pattern-orange-white.svg` resolve; `hero-geometry-dark/light`,
+`section-chevron`, `side-panel` and `vulpine-pattern-white-steel` all return the
+site's 404 page, and the live bundle references no `/assets/graphics/` path at
+all. The patterns and hero geometry are therefore not implemented, and will not
+be until the real files are supplied — drawing substitutes is exactly what the
+board prohibits.
+
+Not yet audited line by line: chapter 01 Foundation (voice and tone),
+chapter 02 Logo (clearspace, minimum size, colourways, misuse), chapter 06
+Applications.
+
 ## 7 · Open items — external dependencies, marked in-page, not invented
 
 | Item | Owner |

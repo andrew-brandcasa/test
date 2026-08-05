@@ -42,7 +42,14 @@
   --img:grayscale(1) sepia(.42) saturate(1.35) hue-rotate(-8deg) contrast(1.06) brightness(.99);
 
   --r-lg:0; --r-md:0; --r-sm:2px;
-  --w:1400px; --pad:clamp(20px,3.6vw,68px);
+
+  /* board 31 · layout constants */
+  --w:1240px; --pad:clamp(20px,5vw,64px); --hdr-h:76px;
+  --section-block:clamp(80px,9vw,150px); --section-head-gap:clamp(48px,6vw,80px);
+
+  /* board 38 · motion. Everything off under prefers-reduced-motion. */
+  --ease:cubic-bezier(.4,0,.2,1);
+  --t-hover:.2s; --t-card:.3s; --t-panel:.4s; --t-reveal:.7s;
 }
 
 /* Dark is a section treatment, not a site mode. */
@@ -58,7 +65,7 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
-  line-height:1.5;-webkit-font-smoothing:antialiased}
+  font-size:17px;line-height:1.5;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
 img{max-width:100%;display:block}
 a{color:inherit}
 h1,h2,h3,h4{font-weight:500;letter-spacing:-.03em;margin:0}
@@ -76,36 +83,39 @@ p{margin:0}
   -webkit-mask:url(/assets/logos/vulpine-mark.svg) no-repeat center/contain;
   mask:url(/assets/logos/vulpine-mark.svg) no-repeat center/contain}
 .on-dark .eyebrow{color:#C4A880}
-.stmt{font-size:clamp(22px,2.8vw,36px);line-height:1.28;letter-spacing:-.025em;max-width:34ch}
+.stmt{font-size:clamp(1.35rem,2.6vw,2rem);line-height:1.1;letter-spacing:-.02em;max-width:34ch}
 .stmt .d1{color:var(--mut)}
-.big{font-size:clamp(28px,4.3vw,56px);line-height:1.08;max-width:19ch}
-.lead{color:var(--mut);font-size:clamp(15px,1.2vw,17px);max-width:54ch}
+.big{font-size:clamp(1.75rem,4.2vw,3.75rem);line-height:1.05;letter-spacing:-.03em;max-width:19ch}
+.lead{color:var(--mut);font-size:clamp(1.0625rem,1.5vw,1.375rem);line-height:1.6;
+  letter-spacing:-.01em;max-width:54ch}
 .mono-note{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--dim);line-height:1.7}
 
 /* ---------- rhythm ----------
    Ryan: "Every section on every page runs the same beat... Some sections
    should be dense and quiet, some should be a single line alone on the
    screen." These three variants exist to break that. */
-section{padding:clamp(64px,8vw,120px) 0}
+section{padding:var(--section-block) 0}
 .section--quiet{padding:clamp(90px,14vw,220px) 0}   /* one line, alone */
 .section--dense{padding:clamp(48px,5vw,72px) 0}     /* tight, information-heavy */
-.solo{font-size:clamp(26px,4.6vw,58px);line-height:1.12;letter-spacing:-.035em;max-width:20ch}
+.solo{font-size:clamp(1.75rem,4.2vw,3.75rem);line-height:1.05;letter-spacing:-.03em;max-width:20ch}
 .solo .d1{color:var(--mut)}
 
 /* ---------- header ---------- */
 header{position:sticky;top:0;z-index:100;background:color-mix(in srgb,var(--bg) 84%,transparent);
   backdrop-filter:blur(12px);border-bottom:1px solid var(--hair-soft)}
-header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:26px}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:var(--hdr-h);gap:26px}
 .logo{display:flex;align-items:center;text-decoration:none}
 .logo img{height:26px;width:auto;display:block}
 .logo--footer img{height:22px}
 nav{display:flex;align-items:center;gap:26px;font-size:14.5px;color:var(--mut)}
 nav a{text-decoration:none}
 nav a[aria-current="page"]{color:var(--ink)}
-.btn{background:var(--orange);color:#fff;border:0;border-radius:var(--r-sm);padding:9px 17px;
-  font-size:14px;font-family:var(--sans);cursor:pointer;text-decoration:none;
-  display:inline-flex;align-items:center;gap:8px;transition:background .18s}
-.btn:hover{background:var(--orange-h)}
+/* board 23: white on orange only at >=15px Geist Medium */
+.btn{background:var(--orange);color:#fff;border:0;border-radius:var(--r-sm);padding:11px 19px;
+  font-size:15px;font-weight:500;font-family:var(--sans);cursor:pointer;text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:background var(--t-hover) ease,transform var(--t-hover) var(--ease)}
+.btn:hover{background:var(--orange-h);transform:translateY(-2px)}
 .btn svg{width:15px;height:15px;flex:none}
 /* secondary action is a ruled text link, never a second button — the live
    site's pattern, and it keeps one orange decision per view */
@@ -117,8 +127,10 @@ nav a[aria-current="page"]{color:var(--ink)}
 .tlink:hover svg{transform:translateX(4px)}
 .on-dark .tlink{color:#F2F1EE;border-bottom-color:rgba(255,255,255,.35)}
 .on-dark .tlink:hover{border-bottom-color:#fff}
-@media (prefers-reduced-motion:reduce){.tlink,.tlink svg{transition:none}
-  .tlink:hover{gap:8px} .tlink:hover svg{transform:none}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important}
+  .tlink:hover{gap:8px} .tlink:hover svg{transform:none}
+  .btn:hover{transform:none}}
 .menu-btn{display:none}
 @media (max-width:860px){
   nav .lnk{display:none}
@@ -162,14 +174,14 @@ nav a[aria-current="page"]{color:var(--ink)}
   padding:clamp(28px,4vw,56px) 0 clamp(32px,4vw,60px)}
 .hero-stack .in{max-width:var(--w);margin:0 auto;padding:0 var(--pad)}
 .hero-stack .eyebrow{color:var(--sahara)}
-.hero h1{font-size:clamp(34px,5.6vw,74px);line-height:1.04;letter-spacing:-.04em;
+.hero h1{font-size:clamp(2.25rem,5.6vw,5rem);line-height:1.02;letter-spacing:-.03em;
   max-width:17ch;color:var(--ink)}
 .hero h1 em{font-style:normal;color:var(--orange)}
 .hero .lead{margin:20px 0 30px;color:var(--mut);max-width:52ch}
 .hero .cta{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
 @media (max-width:700px){.hero .media{height:auto;min-height:600px}}
 .page-hero{padding:clamp(64px,8vw,120px) 0 clamp(32px,4vw,56px)}
-.page-hero h1{font-size:clamp(30px,5vw,62px);line-height:1.06;letter-spacing:-.038em;max-width:18ch}
+.page-hero h1{font-size:clamp(2.25rem,5.6vw,5rem);line-height:1.02;letter-spacing:-.03em;max-width:18ch}
 
 /* ---------- full-bleed photo break ---------- */
 .break{position:relative;height:clamp(280px,42vw,540px);overflow:hidden;background:var(--deep)}
@@ -225,7 +237,7 @@ nav a[aria-current="page"]{color:var(--ink)}
 .q:last-of-type{border-bottom:1px solid var(--hair)}
 .q .qhead{display:grid;grid-template-columns:88px 1fr;gap:24px;align-items:start}
 .q .qnum{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--orange-tx);padding-top:10px}
-.q h3{font-size:clamp(22px,3vw,38px);line-height:1.16;letter-spacing:-.03em;max-width:22ch;color:var(--ink)}
+.q h3{font-size:clamp(1.35rem,2.6vw,2rem);line-height:1.1;letter-spacing:-.02em;max-width:22ch;color:var(--ink)}
 /* Three columns, as on the live site: the number gutter, the argument, and
    the engagement list. The right column is what the work actually is — it is
    never left empty. */
@@ -289,7 +301,7 @@ nav a[aria-current="page"]{color:var(--ink)}
 
 /* ---------- close ---------- */
 .close{background:var(--deep)}
-.close h2{font-size:clamp(28px,4.2vw,56px);line-height:1.06;max-width:16ch;letter-spacing:-.035em}
+.close h2{font-size:clamp(1.75rem,4.2vw,3.75rem);line-height:1.05;max-width:16ch;letter-spacing:-.03em}
 
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--hair);padding:56px 0 40px}
