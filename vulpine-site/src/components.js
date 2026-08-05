@@ -78,7 +78,7 @@ export function provenanceBlock() {
 
 export function maturityKey() {
   return `<div class="mkey">${LEVELS.map((l) =>
-    `<div><i class="l${l.n}"></i>${l.n} ${esc(l.name)} · <b>${esc(l.short)}</b></div>`).join('')}</div>`;
+    `<div><i class="l${l.n}"></i>${l.n} ${esc(l.name)}</div>`).join('')}</div>`;
 }
 
 /** The public instrument. Unscored: no client data, no invented organization. */
@@ -118,14 +118,10 @@ export function benchmarkInstrument() {
     </details>`).join('');
 
   return `
-    <div class="keyrow">
-      ${maturityKey()}
-      <p class="lead" style="font-size:13.5px;max-width:46ch">${SCORING_RULE}</p>
-    </div>
-
     <div class="inst desk">
       <div class="inst-top">
-        <span class="t">Control domains · published structure, unscored</span>
+        <span class="t">Control domains · unscored</span>
+        ${maturityKey()}
       </div>
       <table class="mx">
         <thead><tr>
@@ -138,6 +134,7 @@ export function benchmarkInstrument() {
       </table>
       ${gates}
     </div>
+    <p class="lead rule-note">${SCORING_RULE}</p>
 
     <div class="mob">
       <div class="summary">
@@ -145,6 +142,7 @@ export function benchmarkInstrument() {
         <div><div class="fig">${SUMMARY.requirements}</div><div class="cap">Requirements</div></div>
         <div><div class="fig">${SUMMARY.t3Gated}</div><div class="cap">Gate T3 at level 3</div></div>
       </div>
+      ${maturityKey()}
       <div class="mlist">${mobileRows}</div>
       <div class="inst" style="margin-top:16px;border-radius:var(--r-md)">
         ${gates.replace('class="gates"', 'class="gates" style="border-top:0"')}

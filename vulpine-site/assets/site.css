@@ -255,6 +255,9 @@ footer{border-top:1px solid var(--hair);padding:56px 0 40px}
 .skip:focus{left:0}
 
 /* ---------- editorial index · lead + list (home insights) ---------- */
+.rule-note{font-size:13.5px;margin-top:16px;max-width:60ch}
+.inst-top .mkey{gap:16px}
+.mob .mkey{margin:2px 0 12px}
 .edix{display:grid;grid-template-columns:1.6fr 1fr;gap:clamp(28px,4vw,56px);margin-top:44px;
   border-top:1px solid var(--hair);padding-top:34px}
 .edix a{text-decoration:none;display:block}
