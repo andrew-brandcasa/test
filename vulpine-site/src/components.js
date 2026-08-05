@@ -195,6 +195,53 @@ export function supervisoryGap() {
 
 /* ------------------------------------------------------------------ mount */
 
+/* ------------------------------------------------------- contact form */
+
+/**
+ * The form posts to FORM_ENDPOINT. Until that is set to a real endpoint it
+ * refuses to submit and says so, rather than clearing the fields and letting
+ * the sender believe an enquiry arrived. A form that silently swallows a
+ * new-business enquiry is worse than no form.
+ */
+export const FORM_ENDPOINT = ''; // e.g. https://formspree.io/f/xxxxxxx
+
+export function contactForm() {
+  const field = (id, label, type, extra = '') => `<p class="fld">
+    <label for="${id}">${label}</label>
+    ${type === 'textarea'
+      ? `<textarea id="${id}" name="${id}" rows="4" ${extra}></textarea>`
+      : `<input id="${id}" name="${id}" type="${type}" ${extra}>`}
+  </p>`;
+
+  return `<form class="cform" method="post"${FORM_ENDPOINT ? ` action="${FORM_ENDPOINT}"` : ''}>
+    <div class="cgrid">
+      ${field('name', 'Your name', 'text', 'required autocomplete="name"')}
+      ${field('email', 'Work email', 'email', 'required autocomplete="email"')}
+      ${field('org', 'Organization', 'text', 'autocomplete="organization"')}
+      ${field('role', 'Your role', 'text', 'autocomplete="organization-title"')}
+    </div>
+    ${field('message', 'What are you trying to deploy, and what is blocking it?', 'textarea', 'required')}
+    <div class="cfoot">
+      <button class="btn" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>Send</button>
+      <span class="cnote">Or email <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a> directly.</span>
+    </div>
+    <p class="cstatus" role="status" aria-live="polite"></p>
+  </form>`;
+}
+
+function wireForm() {
+  const form = document.querySelector('.cform');
+  if (!form) return;
+  const status = form.querySelector('.cstatus');
+  form.addEventListener('submit', (e) => {
+    if (FORM_ENDPOINT) return; // let the browser post it
+    e.preventDefault();
+    status.className = 'cstatus err';
+    status.textContent = 'This form is not connected yet. Please email '
+      + CONTACT_EMAIL + ' and we will reply the same day.';
+  });
+}
+
 export function mount(current) {
   const slot = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
   slot('site-header', header(current));
@@ -204,6 +251,8 @@ export function mount(current) {
   slot('c-domains', allDomains());
   slot('c-authority', authorityModel());
   slot('c-gap', supervisoryGap());
+  slot('c-form', contactForm());
+  wireForm();
 
   const btn = document.querySelector('.menu-btn');
   const mnav = document.getElementById('mnav');

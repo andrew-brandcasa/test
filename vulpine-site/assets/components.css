@@ -147,3 +147,21 @@
 }
 .tlink--sm{font-size:13.5px;padding-bottom:2px}
 .tlink--sm svg{width:13px;height:13px}
+
+/* ---------- contact form ---------- */
+.cform{margin-top:clamp(28px,3.4vw,40px);max-width:760px}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(18px,2vw,28px)}
+.fld{margin-bottom:18px}
+.fld label{display:block;font-size:11px;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.fld input,.fld textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);
+  background:var(--surface);border:1px solid var(--hair);border-radius:var(--r-sm);
+  padding:12px 14px;transition:border-color var(--t-hover) ease}
+.fld textarea{resize:vertical;min-height:118px;line-height:1.5}
+.fld input:focus,.fld textarea:focus{outline:none;border-color:var(--orange)}
+.cfoot{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:6px}
+.cnote{font-size:14px;color:var(--mut)}
+.cstatus{margin-top:14px;font-size:14.5px;line-height:1.5;max-width:56ch}
+.cstatus:empty{display:none}
+.cstatus.err{color:var(--orange-tx)}
+@media (max-width:700px){.cgrid{grid-template-columns:1fr}}
