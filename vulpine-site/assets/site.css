@@ -23,6 +23,7 @@
 
   /* Orange is reserved */
   --orange:#CA6135;      /* fills and marks */
+  --sahara:#8A6B3C;      /* section labels, per the deployed site */
   --orange-h:#D96E40;    /* hover */
   --orange-tx:#A2431F;   /* orange text under 12px — clears 5.59:1 */
 
@@ -58,11 +59,11 @@ p{margin:0}
 .wrap{max-width:var(--w);margin:0 auto;padding:0 var(--pad)}
 
 /* ---------- type scale ---------- */
-.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;
-  color:var(--orange-tx);display:flex;align-items:center;gap:9px;margin-bottom:22px}
-.eyebrow::before{content:"";width:7px;height:7px;background:var(--orange);border-radius:1px;
-  transform:rotate(45deg);flex:0 0 auto}
-.on-dark .eyebrow{color:var(--orange-h)}
+/* Section label — matches the deployed site's .k: sahara, wide tracking,
+   weight 500, and no decorative marker. The brand mark belongs to the logo. */
+.eyebrow{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--sahara);font-weight:500;margin-bottom:12px}
+.on-dark .eyebrow{color:#C4A880}
 .stmt{font-size:clamp(22px,2.8vw,36px);line-height:1.28;letter-spacing:-.025em;max-width:34ch}
 .stmt .d1{color:var(--mut)}
 .big{font-size:clamp(28px,4.3vw,56px);line-height:1.08;max-width:19ch}
@@ -106,6 +107,7 @@ nav a[aria-current="page"]{color:var(--ink)}
   .menu-btn.open span:nth-child(1){transform:translateY(3.5px) rotate(45deg)}
   .menu-btn.open span:nth-child(2){transform:translateY(-3.5px) rotate(-45deg)}
 }
+.mnav[hidden]{display:none}
 .mnav{border-top:1px solid var(--hair);background:var(--bg);padding:6px var(--pad) 20px;
   display:flex;flex-direction:column;align-items:stretch;gap:0}
 .mnav a{padding:15px 0;font-size:17px;letter-spacing:-.015em;text-decoration:none;
@@ -116,16 +118,29 @@ nav a[aria-current="page"]{color:var(--ink)}
 /* ---------- hero ----------
    Photography is structural, not decorative. Ryan: the documentary images
    "are the only elements on the site that could not be a template." */
-.hero{padding:clamp(72px,10vw,150px) 0 clamp(60px,7vw,110px);position:relative;overflow:hidden}
-.hero .bgimg,.hero video{position:absolute;inset:0 0 auto auto;width:58%;height:100%;object-fit:cover;
-  filter:var(--img);opacity:.5;mask-image:linear-gradient(to right,transparent,#000 42%);
-  -webkit-mask-image:linear-gradient(to right,transparent,#000 42%)}
-@media (prefers-reduced-motion:reduce){.hero video{display:none}.hero .bgimg{display:block}}
-.hero .wrap{position:relative}
-.hero h1{font-size:clamp(36px,6.2vw,80px);line-height:1.03;letter-spacing:-.042em;max-width:16ch}
-.hero h1 em{font-style:normal;color:var(--orange)}
-.hero .lead{margin:26px 0 34px}
+/* Hero — the deployed site's structure: one full-bleed darkened media block,
+   a horizontal and a vertical scrim, and the text stacked at the bottom over
+   it. No masked half-image, no seam. */
+.hero{position:relative}
+.hero .media{position:relative;height:min(70svh,720px);min-height:440px;overflow:hidden;
+  background:#0a0a0b}
+.hero .media video,.hero .media img{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;filter:grayscale(1) brightness(.66) contrast(1.06)}
+.hero .media .g1{position:absolute;inset:0;
+  background:linear-gradient(90deg,#0a0a0be0 18%,#0a0a0b80 48%,#0a0a0b14)}
+.hero .media .g2{position:absolute;inset:0;
+  background:linear-gradient(0deg,rgba(10,10,11,.85) 0%,transparent 44%)}
+@media (prefers-reduced-motion:reduce){.hero video{display:none}}
+.hero-stack{position:absolute;left:0;right:0;bottom:0;padding:clamp(28px,4vw,56px) 0
+  clamp(32px,4vw,60px)}
+.hero-stack .in{max-width:var(--w);margin:0 auto;padding:0 var(--pad)}
+.hero-stack .eyebrow{color:#C4A880}
+.hero h1{font-size:clamp(34px,5.6vw,74px);line-height:1.04;letter-spacing:-.04em;
+  max-width:17ch;color:#F5F3EF}
+.hero .lead{margin:20px 0 30px;color:rgba(242,241,238,.82);max-width:52ch}
 .hero .cta{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.hero .cta .btn.ghost{color:#F5F3EF;border-bottom-color:rgba(242,241,238,.4)}
+@media (max-width:700px){.hero .media{height:auto;min-height:600px}}
 .page-hero{padding:clamp(64px,8vw,120px) 0 clamp(32px,4vw,56px)}
 .page-hero h1{font-size:clamp(30px,5vw,62px);line-height:1.06;letter-spacing:-.038em;max-width:18ch}
 
@@ -270,7 +285,8 @@ footer{border-top:1px solid var(--hair);padding:56px 0 40px}
 .skip:focus{left:0}
 
 /* ---------- editorial index · lead + list (home insights) ---------- */
-.rule-note{font-size:13.5px;margin-top:16px;max-width:60ch}
+.rule-note{font-size:13.5px;margin-top:18px;max-width:60ch}
+
 .inst-top .mkey{gap:16px}
 .mob .mkey{margin:2px 0 12px}
 .edix{display:grid;grid-template-columns:1.6fr 1fr;gap:clamp(28px,4vw,56px);margin-top:44px;
