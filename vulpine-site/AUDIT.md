@@ -111,7 +111,7 @@ image placement. Restored from the deployed bundle's asset manifest:
 - `vulpine-logo-primary-light.svg` is the real mark — white glyphs + orange,
   built for the dark site. A mechanically recolored **`primary-dark.svg`**
   (fills `#FFFFFF`→`#15151B`, orange untouched, paths identical) now serves
-  the light chrome. **Jhonny should bless or replace this variant.**
+  the light chrome. **Needs sign-off or a replacement from the brand owner.**
 - Hero: `hero-loop.mp4` + `06-problems-band.jpg` poster (the newest staging
   build's actual hero).
 - `art-strategic.jpg` on the Problems hero; `08-library-landscape-2.jpg`
@@ -183,7 +183,7 @@ approved, which matches Ryan's 30 Jul "light primary" decision and the live
 site's own `[data-theme=light]` scope. The light palette therefore stays as the
 live site defines it — cream `#F4F2ED`, ink `#15151B`, Sahara `#8A6B3C`.
 
-Still unreconciled, for Ryan/Jhonny rather than me to settle: the guidelines'
+Still unreconciled, for Ryan to settle rather than me: the guidelines'
 grayscale ramp is explicitly cool ("No warm greys, ever") and names Cloud
 `#EDEFF7` as the light surface, while the approved light mode uses a warm
 cream. The two documents disagree; I have followed the approved light mode.
@@ -195,7 +195,7 @@ cream. The two documents disagree; I have followed the approved light mode.
 | Scheduler URL (CTAs resolve to mailto until supplied) | Andrew/Ryan |
 | Privacy/terms copy ("will ping legal", 4 Aug) | Ryan → counsel |
 | Final bio prose sign-off | Ryan + Melissa |
-| Light-chrome logo variant blessing | Jhonny |
+| Light-chrome logo variant sign-off | Ryan |
 | Article routing + hosting/CMS answer (Ryan's 30 Jul question) | Andrew ↔ Ryan |
 | Vercel: project-creation permission or `VERCEL_TOKEN` for CLI deploys | Andrew |
 
