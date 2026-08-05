@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="1393 475 73 67" role="img" aria-label="Vulpine mark">
-  <path fill-rule="nonzero" fill="currentColor" d="M 1415.128906 525.703125 L 1429.488281 511.34375 L 1443.847656 525.703125 L 1429.488281 540.0625 Z M 1415.128906 525.703125 "/>
-  <path fill-rule="nonzero" fill="currentColor" d="M 1395.09375 505.671875 L 1415.125 525.699219 L 1415.125 496.980469 L 1395.09375 476.953125 Z M 1395.09375 505.671875 "/>
-  <path fill-rule="nonzero" fill="currentColor" d="M 1463.878906 476.949219 L 1443.847656 496.980469 L 1443.847656 525.707031 L 1463.878906 505.671875 Z M 1463.878906 476.949219 "/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68.785 63.113" role="img" aria-label="Vulpine mark">
+  <path d="M 0 28.723 L 20.031 48.750 L 20.031 20.031 L 0 0 Z" fill="currentColor"/>
+  <path d="M 68.785 0 L 48.754 20.031 L 48.754 48.758 L 68.785 28.723 Z" fill="currentColor"/>
+  <path d="M 20.035 48.754 L 34.395 34.395 L 48.754 48.754 L 34.395 63.113 Z" fill="currentColor"/>
 </svg>

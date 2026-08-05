@@ -121,12 +121,49 @@ image placement. Restored from the deployed bundle's asset manifest:
   articles. Exception: `art-evidence` as the home full-bleed break follows
   Ryan's mock exactly.
 
+## 6b · Measured against the live site (5 Aug)
+
+The live build at `vulpine-website.vercel.app` is a client-rendered SPA, so
+grepping its bundle was not enough — it was mirrored locally, served, and
+rendered in Chromium. Everything below was measured off that render rather
+than inferred, and my build was corrected to match.
+
+| Element | Live site | Was | Now |
+|---|---|---|---|
+| Hero treatment | Light: image at `.62` opacity, warm-lifted filter, cream scrims, ink type | Dark: image at `.66` brightness, near-black scrims, cream type | Light, matching the measured filter and both scrim gradients |
+| Hero headline | "deployable" set in orange | All one colour | Orange, via `.hero h1 em` |
+| Section label | Small brand chevron before every label | Chevron stripped | Restored as `.eyebrow::before`, mask-based so it recolours |
+| Watermark | Hero 560px/.12, steel band 620px/.06, closing band 520px/.07 | Absent, then a single 340px/.06 guess | Per-band sizes and opacities as measured |
+| Brand mark geometry | `viewBox 0 0 68.785 63.113`, three paths | An extraction with translated coordinates | Normalised geometry from the deployed bundle |
+| Primary CTA | "Start a conversation" / "Get in touch", envelope icon | "Book a 30-minute call", no icon | Live labels and icon |
+| Secondary CTA | Ruled text link with an arrow | A second button | `.tlink` |
+| Contact address | `hello@vulpine.ai` | `hello@thevulpinegroup.com` | `hello@vulpine.ai` site-wide |
+| Question sections | Three columns: number, argument, "How we help" list | Argument only, plus two chips; 60% of the row empty | Full engagement lists (6–7 items each), verbatim from the bundle |
+
+Deliberately **not** copied from the live build: the `.bloom` radial glows
+behind each watermark. Ryan's 30 Jul decision log refuses gradients
+("we sell control and restraint to people who are professionally suspicious
+of flash"), and that decision post-dates the build. The isometric line
+illustrations in its thesis band are refused on the same grounds.
+
+## 6c · Layout defects found by rendering, and fixed
+
+| Defect | Fix |
+|---|---|
+| `VCA-10`/`VCA-11` pushed their domain names out of column | Identifier set to a fixed 56px inline-block |
+| Authority gate column orphaned "2" onto its own line | Column widened to 300px, `text-wrap:balance` on the sentence |
+| Who We Are origin: five paragraphs stacked left, half the page empty | Editorial split — sticky heading column, prose column |
+| Bio credential rules sat at different heights | Bios are flex columns, credentials pinned with `margin-top:auto` |
+| Photo-break caption illegible over light photography | Scrim runs deeper, three stops instead of two |
+| Experience band: ink type over a bare 35%-opacity photo | Same cream scrim the hero uses |
+| Mobile menu repeated the CTA already pinned in the sticky header | Panel carries links only |
+| Scoring rule rendered above the mobile instrument | Moved below both variants |
+
 ## 7 · Open items — external dependencies, marked in-page, not invented
 
 | Item | Owner |
 |---|---|
 | Scheduler URL (CTAs resolve to mailto until supplied) | Andrew/Ryan |
-| Contact domain: hello@vulpine.ai vs thevulpinegroup.com | Ryan |
 | Privacy/terms copy ("will ping legal", 4 Aug) | Ryan → counsel |
 | Final bio prose sign-off | Ryan + Melissa |
 | Light-chrome logo variant blessing | Jhonny |
@@ -135,7 +172,18 @@ image placement. Restored from the deployed bundle's asset manifest:
 
 ## 8 · Verification record
 
-Every page verified in Chromium at 1440px and 390px on each iteration:
-components mount (11 benchmark rows / 4 tiers / 5 gap rows), landmarks
-balanced, logo and headshots load, zero console errors, zero 404s, zero
-dead links, no truncated copy, no `.ins` card grid remnants.
+All seven pages rendered in Chromium at 1440px and 390px and checked
+mechanically, not by eye alone. Last run, 5 Aug — clean on every page at
+both widths:
+
+- components mount: 11 benchmark rows, 11 mobile rows, 4 authority tiers,
+  5 supervisory-gap rows
+- no horizontal scroll, no element escaping the viewport
+- exactly one `<main>` and one `<h1>` per page
+- logo, headshots and imagery load; every internal `href` resolves to a file
+- no empty links, no console errors, no 4xx responses
+- mobile navigation opens and closes (panel height 0 → 252 → 0)
+
+The one request that fails in this sandbox is the Google Fonts stylesheet,
+which the agent proxy blocks. It is not a site fault; Geist and Geist Mono
+resolve normally from Vercel.

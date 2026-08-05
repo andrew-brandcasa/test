@@ -12,11 +12,11 @@ import { GAP_ROWS, MULTI_GAP, CARRY_LINE, SECOND_BEAT, CAPTION } from './supervi
 export const esc = (s) => String(s).replace(/[&<>"]/g, (c) =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-/* Every call to action points here. Ryan's note: every CTA on the current
-   draft is a mailto with no capture. The scheduler URL has not been supplied,
-   so the link is marked rather than invented. */
+/* Chrome CTAs jump to the closing band, which carries the real mailto. Label
+   and address match the live site: "Get in touch" / hello@vulpine.ai. */
 export const CTA_HREF = '#contact';
-export const CTA_LABEL = 'Book a 30-minute call';
+export const CTA_LABEL = 'Get in touch';
+export const CONTACT_EMAIL = 'hello@vulpine.ai';
 
 const range = (d) => `${d.prefix}-01 <span>…</span> ${d.prefix}-${String(d.reqs).padStart(2, '0')}`;
 const gateTag = (d) => `<span class="tag${d.t3 ? ' t3' : ''}">${d.t3 ? 'T2 · T3' : 'T2'}</span>`;
@@ -32,17 +32,18 @@ export function header(current) {
       ${link('/who-we-are.html', 'Who we are', 'who')}
       ${link('/problems-we-solve.html', 'Problems we solve', 'problems')}
       ${link('/insights.html', 'Insights', 'insights')}
-      <a class="btn" href="${CTA_HREF}">Get in touch</a>
+      <a class="btn" href="${CTA_HREF}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.2 6.6 8.8 5.9 8.8-5.9"/></svg>Get in touch</a>
       <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mnav">
         <span></span><span></span>
       </button>
     </nav>
   </div>
+  <!-- links only: the header is sticky, so the orange CTA beside the toggle
+       is always on screen and repeating it in the panel is noise -->
   <nav id="mnav" class="mnav" hidden aria-label="Site">
     <a href="/who-we-are.html">Who we are</a>
     <a href="/problems-we-solve.html">Problems we solve</a>
     <a href="/insights.html">Insights</a>
-    <a href="${CTA_HREF}">${CTA_LABEL}</a>
   </nav></header>`;
 }
 
@@ -61,7 +62,7 @@ export function footer() {
         <a href="/#benchmark">The benchmark</a>
       </div>
       <div><h5>Contact</h5>
-        <a href="${CTA_HREF}">${CTA_LABEL}</a>
+        <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>
         <a href="https://www.linkedin.com/company/the-vulpine-group/" rel="noopener">LinkedIn</a>
       </div>
     </div>
@@ -143,7 +144,6 @@ export function benchmarkInstrument() {
       </table>
       ${gates}
     </div>
-    <p class="lead rule-note">${SCORING_RULE}</p>
 
     <div class="mob">
       <div class="summary">
@@ -156,7 +156,8 @@ export function benchmarkInstrument() {
       <div class="inst" style="margin-top:16px;border-radius:var(--r-md)">
         ${gates.replace('class="gates"', 'class="gates" style="border-top:0"')}
       </div>
-    </div>`;
+    </div>
+    <p class="lead rule-note">${SCORING_RULE}</p>`;
 }
 
 /* -------------------------------------- component B · the authority model */

@@ -62,7 +62,12 @@ p{margin:0}
 /* Section label — matches the deployed site's .k: sahara, wide tracking,
    weight 500, and no decorative marker. The brand mark belongs to the logo. */
 .eyebrow{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--sahara);font-weight:500;margin-bottom:12px}
+  color:var(--sahara);font-weight:500;margin-bottom:12px;
+  display:flex;align-items:center;gap:9px}
+/* the brand mark itself, small, before every section label */
+.eyebrow::before{content:"";width:11px;height:10.1px;flex:0 0 auto;background:var(--orange);
+  -webkit-mask:url(/assets/logos/vulpine-mark.svg) no-repeat center/contain;
+  mask:url(/assets/logos/vulpine-mark.svg) no-repeat center/contain}
 .on-dark .eyebrow{color:#C4A880}
 .stmt{font-size:clamp(22px,2.8vw,36px);line-height:1.28;letter-spacing:-.025em;max-width:34ch}
 .stmt .d1{color:var(--mut)}
@@ -94,9 +99,19 @@ nav a[aria-current="page"]{color:var(--ink)}
   font-size:14px;font-family:var(--sans);cursor:pointer;text-decoration:none;
   display:inline-flex;align-items:center;gap:8px;transition:background .18s}
 .btn:hover{background:var(--orange-h)}
-.btn.ghost{background:transparent;color:var(--ink);border-bottom:1px solid var(--hair);
-  border-radius:0;padding:9px 2px}
-.btn.ghost:hover{border-bottom-color:var(--orange)}
+.btn svg{width:15px;height:15px;flex:none}
+/* secondary action is a ruled text link, never a second button — the live
+   site's pattern, and it keeps one orange decision per view */
+.tlink{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:500;
+  color:var(--ink);text-decoration:none;border-bottom:1px solid var(--hair);
+  padding-bottom:3px;transition:border-color .2s,gap .2s}
+.tlink:hover{border-bottom-color:var(--ink);gap:12px}
+.tlink svg{width:14px;height:14px;stroke:currentColor;fill:none;flex:none;transition:transform .3s}
+.tlink:hover svg{transform:translateX(4px)}
+.on-dark .tlink{color:#F2F1EE;border-bottom-color:rgba(255,255,255,.35)}
+.on-dark .tlink:hover{border-bottom-color:#fff}
+@media (prefers-reduced-motion:reduce){.tlink,.tlink svg{transition:none}
+  .tlink:hover{gap:8px} .tlink:hover svg{transform:none}}
 .menu-btn{display:none}
 @media (max-width:860px){
   nav .lnk{display:none}
@@ -112,7 +127,7 @@ nav a[aria-current="page"]{color:var(--ink)}
   display:flex;flex-direction:column;align-items:stretch;gap:0}
 .mnav a{padding:15px 0;font-size:17px;letter-spacing:-.015em;text-decoration:none;
   color:var(--ink);border-bottom:1px solid var(--hair-soft)}
-.mnav a:last-child{color:var(--orange-tx);border-bottom:0}
+.mnav a:last-child{border-bottom:0}
 @media (min-width:861px){.mnav{display:none}}
 
 /* ---------- hero ----------
@@ -121,25 +136,31 @@ nav a[aria-current="page"]{color:var(--ink)}
 /* Hero — the deployed site's structure: one full-bleed darkened media block,
    a horizontal and a vertical scrim, and the text stacked at the bottom over
    it. No masked half-image, no seam. */
+/* Light is primary, so the hero photography is warmed and lifted rather than
+   darkened, and the two scrims are cream. Values taken from the live site's
+   light theme — the image sits at .62 opacity under a horizontal and a
+   vertical cream wash so ink type reads at full contrast over it. */
 .hero{position:relative}
 .hero .media{position:relative;height:min(70svh,720px);min-height:440px;overflow:hidden;
-  background:#0a0a0b}
+  background:var(--bg)}
 .hero .media video,.hero .media img{position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;filter:grayscale(1) brightness(.66) contrast(1.06)}
+  object-fit:cover;opacity:.62;
+  filter:grayscale(1) sepia(.5) saturate(1.35) hue-rotate(-8deg) brightness(1.62) contrast(.82)}
 .hero .media .g1{position:absolute;inset:0;
-  background:linear-gradient(90deg,#0a0a0be0 18%,#0a0a0b80 48%,#0a0a0b14)}
+  background:linear-gradient(90deg,#f4f2edf0 16%,#f4f2eda8 48%,#f4f2ed1f)}
 .hero .media .g2{position:absolute;inset:0;
-  background:linear-gradient(0deg,rgba(10,10,11,.85) 0%,transparent 44%)}
+  background:linear-gradient(0deg,rgba(244,242,237,.92) 0%,transparent 46%)}
 @media (prefers-reduced-motion:reduce){.hero video{display:none}}
-.hero-stack{position:absolute;left:0;right:0;bottom:0;padding:clamp(28px,4vw,56px) 0
-  clamp(32px,4vw,60px)}
+.hero .brandmark{opacity:.06}
+.hero-stack{position:absolute;left:0;right:0;bottom:0;z-index:3;
+  padding:clamp(28px,4vw,56px) 0 clamp(32px,4vw,60px)}
 .hero-stack .in{max-width:var(--w);margin:0 auto;padding:0 var(--pad)}
-.hero-stack .eyebrow{color:#C4A880}
+.hero-stack .eyebrow{color:var(--sahara)}
 .hero h1{font-size:clamp(34px,5.6vw,74px);line-height:1.04;letter-spacing:-.04em;
-  max-width:17ch;color:#F5F3EF}
-.hero .lead{margin:20px 0 30px;color:rgba(242,241,238,.82);max-width:52ch}
-.hero .cta{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
-.hero .cta .btn.ghost{color:#F5F3EF;border-bottom-color:rgba(242,241,238,.4)}
+  max-width:17ch;color:var(--ink)}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero .lead{margin:20px 0 30px;color:var(--mut);max-width:52ch}
+.hero .cta{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
 @media (max-width:700px){.hero .media{height:auto;min-height:600px}}
 .page-hero{padding:clamp(64px,8vw,120px) 0 clamp(32px,4vw,56px)}
 .page-hero h1{font-size:clamp(30px,5vw,62px);line-height:1.06;letter-spacing:-.038em;max-width:18ch}
@@ -147,8 +168,11 @@ nav a[aria-current="page"]{color:var(--ink)}
 /* ---------- full-bleed photo break ---------- */
 .break{position:relative;height:clamp(280px,42vw,540px);overflow:hidden;background:var(--deep)}
 .break img{width:100%;height:100%;object-fit:cover;filter:var(--img)}
-.break .cap{position:absolute;inset:auto 0 0 0;padding:var(--pad);
-  background:linear-gradient(to top,rgba(0,0,0,.74),transparent)}
+/* the scrim has to hold light-sky photography as well as dark interiors, so
+   it runs deeper and stays opaque well past the top line of the caption */
+.break .cap{position:absolute;inset:auto 0 0 0;padding:calc(var(--pad) * 1.6) var(--pad) var(--pad);
+  background:linear-gradient(to top,rgba(10,10,11,.86) 0%,rgba(10,10,11,.72) 42%,
+    rgba(10,10,11,.34) 74%,transparent 100%)}
 .break .cap p{max-width:var(--w);margin:0 auto;color:#F2F1EE;
   font-size:clamp(19px,2.5vw,33px);letter-spacing:-.028em;line-height:1.22}
 .break .cap p span{display:block;max-width:24ch}
@@ -196,17 +220,40 @@ nav a[aria-current="page"]{color:var(--ink)}
 .q .qhead{display:grid;grid-template-columns:88px 1fr;gap:24px;align-items:start}
 .q .qnum{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--orange-tx);padding-top:10px}
 .q h3{font-size:clamp(22px,3vw,38px);line-height:1.16;letter-spacing:-.03em;max-width:22ch;color:var(--ink)}
-.q .qbody{margin-left:112px;max-width:64ch;margin-top:22px;display:grid;gap:14px}
+/* Three columns, as on the live site: the number gutter, the argument, and
+   the engagement list. The right column is what the work actually is — it is
+   never left empty. */
+.q{--qgut:88px;--qgap:clamp(28px,4vw,68px)}
+.q .qgrid{display:grid;grid-template-columns:var(--qgut) minmax(0,1.22fr) minmax(0,1fr);
+  gap:0 var(--qgap);margin-top:22px;align-items:start}
+.q .qbody{grid-column:2;max-width:62ch;display:grid;gap:14px}
 .q .qbody p{color:var(--mut);font-size:15.5px}
 .q .qbody p.first{color:var(--ink);font-size:17px}
-.q .services{margin-left:112px;margin-top:24px;display:flex;flex-wrap:wrap;gap:8px}
+.q .services{grid-column:3}
+.q .services .how{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.q .services ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair-soft)}
+.q .services li{display:flex;align-items:baseline;gap:11px;padding:10px 0;
+  border-bottom:1px solid var(--hair-soft);font-size:14.5px;color:var(--mut);line-height:1.4}
+.q .services li::before{content:"";flex:0 0 auto;width:0;height:0;transform:translateY(-2px);
+  border-left:4px solid transparent;border-right:4px solid transparent;
+  border-top:5px solid var(--orange)}
 .q .services span{font-family:var(--mono);font-size:11px;letter-spacing:.05em;border-radius:3px;
   padding:5px 10px;border:1px solid var(--hair);color:var(--steel-3)}
-.q .visual{margin-left:112px;margin-top:34px}
+/* the authority ladder runs the full measure under the argument, aligned to
+   the prose column rather than the number gutter */
+.q .visual{margin-left:calc(var(--qgut) + var(--qgap));margin-top:34px}
+@media (max-width:1000px){
+  .q .qgrid{grid-template-columns:var(--qgut) minmax(0,1fr);gap:0 var(--qgap)}
+  .q .qbody{grid-column:2}
+  .q .services{grid-column:2;margin-top:26px}
+}
 @media (max-width:800px){
   .q .qhead{grid-template-columns:1fr;gap:8px}
   .q .qnum{padding-top:0}
-  .q .qbody,.q .services,.q .visual{margin-left:0}
+  .q .qgrid{grid-template-columns:1fr}
+  .q .qbody,.q .services{grid-column:1}
+  .q .visual{margin-left:0}
 }
 
 /* ---------- insights ---------- */
@@ -224,13 +271,16 @@ nav a[aria-current="page"]{color:var(--ink)}
 /* ---------- leadership ---------- */
 .bios{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--hair);
   border:1px solid var(--hair);border-radius:var(--r-md);overflow:hidden;margin-top:38px}
-.bio{background:var(--surface);padding:30px}
+/* column layout so the credential rule sits on the same baseline in both
+   bios regardless of how long the prose runs */
+.bio{background:var(--surface);padding:30px;display:flex;flex-direction:column}
 .bio h4{font-size:20px;letter-spacing:-.025em;color:var(--steel)}
 .bio .role{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
   color:var(--dim);margin:7px 0 16px}
 .bio p{color:var(--mut);font-size:14.5px;margin-bottom:12px}
 .bio .creds{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--steel-3);
-  border-top:1px solid var(--hair);padding-top:14px;margin-top:16px}
+  border-top:1px solid var(--hair);padding-top:14px;margin-top:auto}
+.bio p:last-of-type{margin-bottom:16px}
 @media (max-width:800px){.bios{grid-template-columns:1fr}}
 
 /* ---------- close ---------- */
@@ -261,12 +311,34 @@ footer{border-top:1px solid var(--hair);padding:56px 0 40px}
 
 /* ---------- experience band · the Who We Are visual pause ----------
    Replaces the deleted statistics module. Conveys scale without a figure. */
-.expband{position:relative;padding:clamp(80px,11vw,170px) 0;overflow:hidden}
+.expband{position:relative;padding:clamp(80px,11vw,170px) 0;overflow:hidden;background:var(--bg)}
 .expband .bg{position:absolute;inset:0;background-size:cover;background-position:center;
-  filter:var(--img);opacity:.35}
-.expband .wrap{position:relative}
+  filter:var(--img);opacity:.42}
+/* same cream scrim the hero uses: the type side reads as paper, the far side
+   stays photographic. Ink over a bare 35%-opacity photo was muddy. */
+.expband::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,#f4f2edf2 20%,#f4f2eda8 52%,#f4f2ed1f)}
+.expband .wrap{position:relative;z-index:2}
 .expband p{color:var(--ink);font-size:clamp(20px,2.6vw,32px);letter-spacing:-.028em;
   line-height:1.25;max-width:26ch}
+
+/* ---------- editorial split ----------
+   Long-form argument gets a heading column and a prose column rather than one
+   left-hugging stack with half the page empty. The live site's pattern for
+   the origin story and the same one Lazard uses for long copy. */
+.split{display:grid;grid-template-columns:minmax(0,46%) minmax(0,1fr);
+  gap:clamp(28px,4vw,64px);align-items:start}
+.split-head{position:sticky;top:96px}
+.split-head .stmt{max-width:14ch}
+.split-body{display:grid;gap:16px;max-width:64ch}
+.split-body p{color:var(--mut);font-size:16.5px;line-height:1.62}
+.split-body p:first-child{color:var(--ink)}
+@media (max-width:900px){
+  .split{grid-template-columns:1fr;gap:24px}
+  .split-head{position:static}
+  .split-head .stmt{max-width:none}
+}
+@media (prefers-reduced-motion:reduce){.split-head{position:static}}
 
 /* ---------- problems page hero media ---------- */
 .phero-media{margin-top:clamp(30px,4vw,52px)}
@@ -287,17 +359,22 @@ footer{border-top:1px solid var(--hair);padding:56px 0 40px}
 /* ---------- editorial index · lead + list (home insights) ---------- */
 /* ---------- brand mark overlay ----------
    The mark set large and quiet, bleeding off the right edge of a section.
-   Uses currentColor so it inherits the band's ink. */
+   Sizes and opacities measured off the live site rather than chosen: the
+   hero carries it at 560px/12%, the steel band at 620px/6%, the closing
+   band at 520px/7%. Orange on light grounds, cream on the steel. */
 .has-mark{position:relative;overflow:hidden}
-.has-mark > .wrap{position:relative;z-index:1}
-.brandmark{position:absolute;top:50%;right:clamp(24px,5vw,96px);
-  transform:translateY(-50%);width:clamp(150px,20vw,290px);aspect-ratio:73/67;
-  color:currentColor;opacity:.07;pointer-events:none;z-index:0;
+.has-mark > .wrap,.has-mark > .in{position:relative;z-index:2}
+.brandmark{position:absolute;right:-120px;bottom:-140px;width:560px;aspect-ratio:68.785/63.113;
+  pointer-events:none;z-index:1;opacity:.12;background:var(--orange);
   -webkit-mask:url(/assets/logos/vulpine-mark.svg) no-repeat center/contain;
-  mask:url(/assets/logos/vulpine-mark.svg) no-repeat center/contain;
-  background:currentColor}
-.on-dark .brandmark{opacity:.10}
-@media (max-width:700px){.brandmark{opacity:.055;width:min(42vw,190px);right:16px}}
+  mask:url(/assets/logos/vulpine-mark.svg) no-repeat center/contain}
+.on-dark .brandmark{background:#F2F1EE;opacity:.06;width:620px}
+/* on the closing band the mark centres vertically off the right edge */
+.close .brandmark{left:auto;right:-4%;top:50%;bottom:auto;transform:translateY(-50%);
+  width:520px;opacity:.07}
+@media (max-width:860px){
+  .brandmark,.on-dark .brandmark,.close .brandmark{width:320px}
+  .brandmark{right:-80px;bottom:-90px}}
 
 .rule-note{font-size:13.5px;margin-top:18px;max-width:60ch}
 

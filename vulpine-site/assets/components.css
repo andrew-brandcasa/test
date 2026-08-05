@@ -56,8 +56,10 @@ table.mx tbody tr:last-child{border-bottom:1.5px solid var(--steel)}
 
 .dom{padding:18px 18px 18px 0;font-size:16.5px;letter-spacing:-.015em;color:var(--ink);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dom code{font-family:var(--mono);font-size:10.5px;color:var(--dim);margin-right:14px;
-  letter-spacing:.06em}
+/* fixed width so VCA-10 and VCA-11 do not push their domain names out of the
+   column — every name starts on the same vertical */
+.dom code{font-family:var(--mono);font-size:10.5px;color:var(--dim);letter-spacing:.06em;
+  display:inline-block;width:56px}
 /* requirement identifiers are fixed strings — mono, quiet, never restyled */
 .rid{font-family:var(--mono);font-size:11.5px;color:var(--mut);letter-spacing:.04em;
   padding:18px 10px 18px 0}
@@ -111,7 +113,7 @@ table.mx td.gate{text-align:right;padding:15px 0 15px 10px;white-space:nowrap}
 /* ---------- authority ladder ---------- */
 .ladder{display:grid;gap:1px;background:var(--hair);border:1px solid var(--hair);
   border-radius:var(--r-md);overflow:hidden}
-.rung{background:var(--surface);display:grid;grid-template-columns:140px 1fr 260px}
+.rung{background:var(--surface);display:grid;grid-template-columns:140px 1fr 300px}
 .rung .rid-col{padding:22px;border-right:1px solid var(--hair);display:flex;flex-direction:column;
   gap:10px;justify-content:center}
 .rung .rid-col code{font-family:var(--mono);font-size:16px;letter-spacing:.06em;color:var(--steel)}
@@ -128,7 +130,8 @@ table.mx td.gate{text-align:right;padding:15px 0 15px 10px;white-space:nowrap}
 .rung .g .lab{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
   color:var(--dim)}
 /* orange only on the requirement identifiers; the sentence stays steel */
-.rung .g .req{font-size:13.5px;color:var(--steel-3)}
+/* balance stops the gate sentence orphaning "2" on its own line */
+.rung .g .req{font-size:13.5px;color:var(--steel-3);text-wrap:balance}
 .rung .g .req em{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--orange-tx)}
 @media (max-width:900px){
   .rung{grid-template-columns:1fr}
