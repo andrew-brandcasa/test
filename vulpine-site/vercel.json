@@ -4,6 +4,7 @@
   "rewrites": [
     { "source": "/assets/fonts/:file", "destination": "https://vulpine-website.vercel.app/assets/fonts/:file" },
     { "source": "/assets/imagery/:file", "destination": "https://vulpine-website.vercel.app/assets/imagery/:file" },
+    { "source": "/assets/logos/:file", "destination": "https://vulpine-website.vercel.app/assets/logos/:file" },
     { "source": "/assets/video/:file", "destination": "https://vulpine-website.vercel.app/assets/video/:file" },
     { "source": "/assets/web/:file", "destination": "https://vulpine-website.vercel.app/assets/web/:file" }
   ]
