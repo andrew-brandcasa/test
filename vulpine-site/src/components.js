@@ -33,8 +33,17 @@ export function header(current) {
       ${link('/problems-we-solve.html', 'Problems we solve', 'problems')}
       ${link('/insights.html', 'Insights', 'insights')}
       <a class="btn" href="${CTA_HREF}">Get in touch</a>
+      <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mnav">
+        <span></span><span></span>
+      </button>
     </nav>
-  </div></header>`;
+  </div>
+  <nav id="mnav" class="mnav" hidden aria-label="Site">
+    <a href="/who-we-are.html">Who we are</a>
+    <a href="/problems-we-solve.html">Problems we solve</a>
+    <a href="/insights.html">Insights</a>
+    <a href="${CTA_HREF}">${CTA_LABEL}</a>
+  </nav></header>`;
 }
 
 export function footer() {
@@ -215,4 +224,22 @@ export function mount(current) {
   slot('c-benchmark', benchmarkInstrument());
   slot('c-authority', authorityModel());
   slot('c-gap', supervisoryGap());
+
+  const btn = document.querySelector('.menu-btn');
+  const mnav = document.getElementById('mnav');
+  if (btn && mnav) {
+    btn.addEventListener('click', () => {
+      const open = mnav.hidden;
+      mnav.hidden = !open;
+      btn.setAttribute('aria-expanded', String(open));
+      btn.classList.toggle('open', open);
+    });
+    mnav.addEventListener('click', (e) => {
+      if (e.target.closest('a')) {
+        mnav.hidden = true;
+        btn.setAttribute('aria-expanded', 'false');
+        btn.classList.remove('open');
+      }
+    });
+  }
 }
