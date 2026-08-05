@@ -115,3 +115,35 @@
   .gaprow .doms::before{content:"The domain that covers it"}
   .gaprow .doms{flex-direction:row;flex-wrap:wrap}
 }
+
+/* ---------- benchmark page ---------- */
+.levels{list-style:none;margin:clamp(26px,3vw,36px) 0 0;padding:0;display:grid;gap:1px;
+  background:var(--hair);border:1px solid var(--hair);border-radius:var(--r-md);overflow:hidden}
+.levels li{background:var(--surface);padding:18px 24px;display:grid;
+  grid-template-columns:110px minmax(0,240px) minmax(0,1fr);gap:20px;align-items:baseline}
+.lv-n{font-weight:500;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
+  font-variant-numeric:tabular-nums}
+.lv-nm{font-size:16.5px;letter-spacing:-.02em;color:var(--ink)}
+.lv-de{font-size:14.5px;color:var(--mut)}
+@media (max-width:760px){.levels li{grid-template-columns:1fr;gap:6px}}
+
+.domlist{list-style:none;margin:clamp(28px,3.4vw,42px) 0 0;padding:0;display:grid;gap:1px;
+  background:var(--hair);border:1px solid var(--hair);border-radius:var(--r-md);overflow:hidden}
+.domlist li{background:var(--surface);padding:22px 26px;
+  display:grid;grid-template-columns:78px minmax(0,300px) minmax(0,1fr);gap:24px;align-items:baseline}
+/* the higher bar is marked by a rule, not by a colour swap, so the list still
+   reads in one pass */
+.domlist li.hi{box-shadow:inset 3px 0 0 var(--orange)}
+.dl-id{font-weight:500;font-size:12px;letter-spacing:.1em;color:var(--orange-tx);
+  font-variant-numeric:tabular-nums}
+.domlist li:not(.hi) .dl-id{color:var(--dim)}
+.dl-nm{font-size:16.5px;letter-spacing:-.02em;color:var(--ink);line-height:1.3}
+.dl-de{font-size:14.5px;color:var(--mut);line-height:1.55}
+.dl-bar{grid-column:2/-1;font-size:12px;font-weight:500;letter-spacing:.06em;color:var(--dim);
+  margin-top:4px}
+@media (max-width:860px){
+  .domlist li{grid-template-columns:1fr;gap:7px}
+  .dl-bar{grid-column:1}
+}
+.tlink--sm{font-size:13.5px;padding-bottom:2px}
+.tlink--sm svg{width:13px;height:13px}

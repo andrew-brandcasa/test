@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Vulpine Control Architecture Benchmark | Vulpine</title>
+<meta name="description" content="Eleven control domains and 71 requirements that decide how much authority an AI agent is allowed to hold. Published in full.">
+<meta property="og:image" content="https://vulpine-website.vercel.app/assets/web/vulpine-og-social.jpg">
+<link rel="icon" href="/assets/web/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/web/favicon-180x180.png">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/components.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div id="site-header"></div>
+<main id="main">
+
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">The benchmark</p>
+    <h1>The Vulpine Control Architecture Benchmark.</h1>
+    <p class="lead" style="margin-top:24px">Eleven areas of control, seventy-one requirements, and
+      one question: how much authority is this agent allowed to hold, and what has to be true before
+      it holds it. Published in full so a client can check our work, and so a bank can hand it to
+      an examiner.</p>
+  </div>
+</section>
+
+<!-- What VCA stands for. The identifier appeared eleven times on this site
+     before this page existed and was never once expanded. -->
+<section class="section--dense">
+  <div class="wrap">
+    <div class="split">
+      <div class="split-head">
+        <p class="eyebrow">What it is</p>
+        <p class="stmt">A control model, <span class="d1">not a maturity survey.</span></p>
+      </div>
+      <div class="split-body">
+        <p><b>VCA</b> stands for Vulpine Control Architecture. Every requirement in it carries an
+          identifier like <code>VCA-4</code>, so a finding in an assessment report, a slide in a
+          board pack and a line in a remediation plan can all point at the same thing.</p>
+        <p>It exists because the usual question, "is this model safe", cannot be answered. The
+          question it replaces is answerable: what can this agent actually do, what stops it doing
+          more, and can you prove the stop works. That reframing is the whole method.</p>
+        <p>The benchmark is vendor-neutral. It says nothing about which model, cloud or framework a
+          client runs. It is reviewed every quarter and whenever a framework it maps to changes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- The four levels: the vocabulary the rest of the page depends on. -->
+<section class="section--dense">
+  <div class="wrap">
+    <p class="eyebrow">How each area is scored</p>
+    <p class="stmt">Four levels, <span class="d1">and the score is the weakest link.</span></p>
+    <div id="c-levels"></div>
+    <p class="rule-note">A domain scores at its weakest requirement, never the average. A control
+      that works for nine paths out of ten is not a control.</p>
+  </div>
+</section>
+
+<div class="break" style="height:clamp(220px,30vw,420px)">
+  <img src="/assets/imagery/art-production.jpg"
+       alt="Plant machinery running under work lights">
+  <div class="cap"><p><span>An agent gets more authority by earning it, one level at a time.</span></p></div>
+</div>
+
+<!-- The eleven, in full. This is the answer to "if there are eleven, why am I
+     only being shown six". -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow">The eleven domains</p>
+    <p class="stmt">All eleven, <span class="d1">in full.</span></p>
+    <p class="lead" style="margin-top:20px;margin-bottom:8px">Six of them carry a higher bar. Those
+      six have to be independently proven, not just switched on, before an agent is allowed to do
+      something that cannot be undone. The other five have to be enforced, which is a real
+      requirement but a lower one. Both are marked below.</p>
+    <div id="c-domains"></div>
+  </div>
+</section>
+
+<!-- The tier ladder, reused from question 03 rather than rewritten. -->
+<section class="section--dense" style="background:var(--deep)">
+  <div class="wrap">
+    <p class="eyebrow">What the levels buy</p>
+    <p class="stmt">Authority is granted by tier, <span class="d1">and every tier has a gate.</span></p>
+    <div style="margin-top:clamp(28px,3.4vw,40px)"><div id="c-authority"></div></div>
+    <p class="rule-note">A workflow's tier is the tier of its most consequential step. An agent that
+      can cause a T3 action indirectly, by asking another agent, is treated as holding T3 authority
+      itself.</p>
+  </div>
+</section>
+
+<section class="close has-mark" id="contact">
+  <span class="brandmark" aria-hidden="true"></span>
+  <div class="wrap">
+    <h2>Want this run against your own systems?</h2>
+    <p class="lead" style="margin:22px 0 30px">An assessment scores every domain, names the gaps,
+      and hands you the evidence pack. The first conversation is a scoping call, not a pitch.</p>
+    <a class="btn" href="mailto:hello@vulpine.ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>Get in touch</a>
+  </div>
+</section>
+
+</main>
+<div id="site-footer"></div>
+
+<script type="module">
+  import { mount } from '/src/components.js';
+  mount('benchmark');
+</script>
+</body>
+</html>

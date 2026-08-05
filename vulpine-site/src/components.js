@@ -26,9 +26,9 @@ export function header(current) {
   return `<header><div class="wrap">
     <a class="logo" href="/" aria-label="Vulpine, home"><img src="/assets/logos/vulpine-logo-primary-dark.svg" alt="Vulpine"></a>
     <nav>
-      ${link('/who-we-are.html', 'Who we are', 'who')}
-      ${link('/problems-we-solve.html', 'Problems we solve', 'problems')}
-      ${link('/insights.html', 'Insights', 'insights')}
+      ${link('/who-we-are', 'Who we are', 'who')}
+      ${link('/problems-we-solve', 'Problems we solve', 'problems')}
+      ${link('/insights', 'Insights', 'insights')}
       <a class="btn" href="${CTA_HREF}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>Get in touch</a>
       <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mnav">
         <span></span><span></span>
@@ -38,9 +38,9 @@ export function header(current) {
   <!-- links only: the header is sticky, so the orange CTA beside the toggle
        is always on screen and repeating it in the panel is noise -->
   <nav id="mnav" class="mnav" hidden aria-label="Site">
-    <a href="/who-we-are.html">Who we are</a>
-    <a href="/problems-we-solve.html">Problems we solve</a>
-    <a href="/insights.html">Insights</a>
+    <a href="/who-we-are">Who we are</a>
+    <a href="/problems-we-solve">Problems we solve</a>
+    <a href="/insights">Insights</a>
   </nav></header>`;
 }
 
@@ -53,10 +53,10 @@ export function footer() {
           AI into production, where the stakes are highest.</p>
       </div>
       <div><h5>Explore</h5>
-        <a href="/who-we-are.html">Who we are</a>
-        <a href="/problems-we-solve.html">Problems we solve</a>
-        <a href="/insights.html">Insights</a>
-        <a href="/#benchmark">The benchmark</a>
+        <a href="/who-we-are">Who we are</a>
+        <a href="/problems-we-solve">Problems we solve</a>
+        <a href="/insights">Insights</a>
+        <a href="/benchmark">The benchmark</a>
       </div>
       <div><h5>Contact</h5>
         <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>
@@ -65,7 +65,7 @@ export function footer() {
     </div>
     <div class="fbot">
       <span>© 2026 The Vulpine Group. The Vulpine Group is a d/b/a of Fox Strategy Co. LLC.</span>
-      <span><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></span>
+      <span><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></span>
     </div>
   </div></footer>`;
 }
@@ -92,11 +92,8 @@ export function benchmarkInstrument() {
   /* the whitespace between these spans is load-bearing: without it the figure
      and its label ran together as "11control domains" for anyone copying the
      text or reading it with a screen reader */
-  const figures = [
-    [DOMAINS.length, 'control domains'],
-    [BENCHMARK.requirementTotal, 'requirements'],
-    [LEVELS.length, 'maturity levels'],
-  ].map(([n, label]) => `<div class="fig"><b>${n}</b> <span>${label}</span></div>`).join('');
+  /* three floating figures used to sit here. They stated scale and nothing
+     else, and the 11 contradicted the six domains listed underneath. */
 
   /* unordered: these six are a set, not a sequence. Numbering them implied a
      first and a sixth that do not exist. */
@@ -107,16 +104,38 @@ export function benchmarkInstrument() {
   </li>`).join('');
 
   return `<div class="bench">
-    <div class="figs">${figures}</div>
     <div class="gate-block">
-      <p class="lead gate-lead">Before an agent can do anything it cannot take back, six of the
-        eleven have to be proven, not just switched on. Moving money. Contacting customers at
+      <p class="lead gate-lead">The Vulpine Control Architecture is ${DOMAINS.length} areas of
+        control and ${BENCHMARK.requirementTotal} requirements. Before an agent can do anything it
+        cannot take back, six of those eleven have to be proven, not just switched on. Moving money. Contacting customers at
         scale. Changing production. Deleting data.</p>
       <ul class="gated">${gated}</ul>
-      <p class="rule-note">Each domain scores at its weakest requirement, never the average.
-        Built against OWASP, MITRE ATLAS, NIST and the EU AI Act, and reviewed every quarter.</p>
+      <p class="rule-note">The other five have to be enforced rather than proven, which is a
+        lower bar. <a class="tlink tlink--sm" href="/benchmark">See all eleven, and what VCA
+        means<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></p>
     </div>
   </div>`;
+}
+
+/* ------------------------------- benchmark page · levels and all eleven */
+
+export function levelScale() {
+  return `<ol class="levels">${LEVELS.map((l) => `<li>
+    <span class="lv-n">Level ${l.n}</span>
+    <span class="lv-nm">${esc(l.name)}.</span>
+    <span class="lv-de">${esc(l.short)}</span>
+  </li>`).join('')}</ol>`;
+}
+
+/** All eleven, with the higher bar marked. Answers "why am I shown six of 11". */
+export function allDomains() {
+  return `<ul class="domlist">${DOMAINS.map((d) => `<li${d.t3 ? ' class="hi"' : ''}>
+    <span class="dl-id">${d.id}</span>
+    <span class="dl-nm">${esc(d.name)}.</span>
+    <span class="dl-de">${esc(d.descriptor)}</span>
+    <span class="dl-bar">${d.reqs} requirements &middot;
+      ${d.t3 ? 'must be independently proven' : 'must be enforced'}</span>
+  </li>`).join('')}</ul>`;
 }
 
 /* -------------------------------------- component B · the authority model */
@@ -181,6 +200,8 @@ export function mount(current) {
   slot('site-header', header(current));
   slot('site-footer', footer());
   slot('c-benchmark', benchmarkInstrument());
+  slot('c-levels', levelScale());
+  slot('c-domains', allDomains());
   slot('c-authority', authorityModel());
   slot('c-gap', supervisoryGap());
 
