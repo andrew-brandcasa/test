@@ -20,17 +20,6 @@
   margin-bottom:clamp(32px,4vw,56px)}
 @media (max-width:900px){.chead{grid-template-columns:1fr;align-items:start}}
 
-/* ---------- maturity key · beside the table, never inside the rows ---------- */
-.keyrow{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;
-  flex-wrap:wrap;margin-bottom:14px}
-.mkey{display:flex;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:9.5px;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
-.mkey div{display:flex;align-items:center;gap:7px}
-.mkey i{width:22px;height:8px;border-radius:2px;display:block;flex:0 0 auto}
-.mkey .l0{background:var(--steel-1)} .mkey .l1{background:var(--steel-2)}
-.mkey .l2{background:var(--steel-3)} .mkey .l3{background:var(--steel)}
-.mkey b{color:var(--mut);font-weight:400}
-
 /* ---------- the instrument · published spec table ----------
    Row = name + grey descriptor; tier columns carry plain text values.
    Board 31: sharp is the brand — no card, no radius, hairlines only.

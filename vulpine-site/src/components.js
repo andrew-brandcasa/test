@@ -6,7 +6,7 @@
  * component. Changing a domain name or a requirement count is a data edit.
  */
 
-import { BENCHMARK, LEVELS, DOMAINS, TIERS, SUMMARY, SCORING_RULE } from './benchmark.js';
+import { BENCHMARK, LEVELS, DOMAINS, TIERS, SCORING_RULE } from './benchmark.js';
 import { GAP_ROWS, MULTI_GAP, CARRY_LINE, SECOND_BEAT, CAPTION } from './supervisory-gap.js';
 
 export const esc = (s) => String(s).replace(/[&<>"]/g, (c) =>
@@ -17,9 +17,6 @@ export const esc = (s) => String(s).replace(/[&<>"]/g, (c) =>
 export const CTA_HREF = '#contact';
 export const CTA_LABEL = 'Get in touch';
 export const CONTACT_EMAIL = 'hello@vulpine.ai';
-
-const range = (d) => `${d.prefix}-01 <span>…</span> ${d.prefix}-${String(d.reqs).padStart(2, '0')}`;
-const gateTag = (d) => `<span class="tag${d.t3 ? ' t3' : ''}">${d.t3 ? 'T2 · T3' : 'T2'}</span>`;
 
 /* ---------------------------------------------------------------- chrome */
 
@@ -84,11 +81,6 @@ export function provenanceBlock() {
     ${BENCHMARK.frameworks.slice(3).join(' · ')}<br>
     ${BENCHMARK.cadence}
   </div>`;
-}
-
-export function maturityKey() {
-  return `<div class="mkey">${LEVELS.map((l) =>
-    `<div><i class="l${l.n}"></i>${l.n} ${esc(l.name)}</div>`).join('')}</div>`;
 }
 
 /**

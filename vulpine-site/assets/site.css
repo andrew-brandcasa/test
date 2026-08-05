@@ -272,18 +272,6 @@ nav a[aria-current="page"]{color:var(--ink)}
   .q .visual{margin-left:0}
 }
 
-/* ---------- insights ---------- */
-.ins{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hair);
-  border:1px solid var(--hair);border-radius:var(--r-md);overflow:hidden;margin-top:44px}
-.ins article{background:var(--bg);padding:0 0 26px}
-.ins a{text-decoration:none;display:block}
-.ins img{width:100%;height:210px;object-fit:cover;filter:var(--img)}
-.ins h4{font-size:17px;line-height:1.3;padding:22px 24px 0;letter-spacing:-.02em;color:var(--steel)}
-.ins .dek{padding:10px 24px 0;font-size:14px;color:var(--mut)}
-.ins .rd{padding:14px 24px 0;font-size:13.5px;color:var(--orange-tx);font-family:var(--mono);
-  font-size:11px;letter-spacing:.1em;text-transform:uppercase}
-@media (max-width:860px){.ins{grid-template-columns:1fr}}
-
 /* ---------- leadership ---------- */
 .bios{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--hair);
   border:1px solid var(--hair);border-radius:var(--r-md);overflow:hidden;margin-top:38px}
@@ -383,8 +371,6 @@ footer{border-top:1px solid var(--hair);padding:56px 0 40px}
   .brandmark{right:-80px;bottom:-90px}}
 
 .rule-note{font-size:13.5px;margin-top:18px;max-width:60ch}
-.inst-top .mkey{gap:16px}
-.mob .mkey{margin:2px 0 12px}
 
 /* ---------- editorial index · lead story + ruled list (home insights) ----
    Lazard and McKinsey treat the lead story larger and run the rest as
@@ -411,5 +397,4 @@ footer{border-top:1px solid var(--hair);padding:56px 0 40px}
 
 /* ---------- micro-polish ---------- */
 h1,h2,h3,.stmt,.solo{text-wrap:balance}
-.summary .fig,.rcount,.rid{font-variant-numeric:tabular-nums}
 .btn:active{transform:scale(.98)}
