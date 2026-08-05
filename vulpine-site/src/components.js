@@ -72,65 +72,46 @@ export function footer() {
 
 /* ------------------------------------------- component A · the benchmark */
 
-export function provenanceBlock() {
-  return `<div class="prov">
-    <b>Vulpine Control Architecture Benchmark ${BENCHMARK.version}</b><br>
-    ${BENCHMARK.published} · eleven control domains · ${BENCHMARK.requirementTotal} requirements<br>
-    Four maturity levels · three authority gates<br>
-    ${BENCHMARK.frameworks.slice(0, 3).join(' · ')}<br>
-    ${BENCHMARK.frameworks.slice(3).join(' · ')}<br>
-    ${BENCHMARK.cadence}
-  </div>`;
-}
-
 /**
- * The public instrument — a published spec table.
+ * The benchmark, stated rather than tabulated.
  *
- * Layout follows the Tailscale pricing comparison: every row is a name with a
- * grey descriptor beneath it, and the tier columns carry plain text values.
- * The domain descriptors exist in the data and the previous table had nowhere
- * to put them, so eleven domains arrived as eleven names a reader could not
- * evaluate.
+ * This replaced an eleven-row, five-column matrix. That table was correct and
+ * unreadable: forty of its cells said "Level 2 · Enforced", so it spent the
+ * most valuable section on the page proving it had a lot of rows. The
+ * differentiating fact is not the size of the benchmark, it is which controls
+ * have to be proven before an agent is allowed to do something irreversible.
+ * That is six named domains and a sentence, so it is published as six named
+ * domains and a sentence.
  *
- * The gating rule already defines a required maturity level for every domain
- * at every tier; that matrix is what the table publishes. Unscored: no client
- * data, no invented organization.
+ * Still unscored: no client data, no invented organization, no requirement
+ * text. Only the structure is public.
  */
-const T01_GATED = new Set(TIERS[0].gateIds);
-const required = (d) => ({ t01: T01_GATED.has(d.id) ? 2 : null, t2: 2, t3: d.t3 ? 3 : 2 });
+const T3_GATED = DOMAINS.filter((d) => d.t3);
 
 export function benchmarkInstrument() {
-  const cell = (lvl, tier) => lvl === null
-    ? `<td class="sv none" data-t="${tier}">&ndash;</td>`
-    : `<td class="sv${lvl === 3 ? ' hi' : ''}" data-t="${tier}">Level ${lvl}`
-      + `<span>${esc(LEVELS[lvl].name)}</span></td>`;
+  const figures = [
+    [DOMAINS.length, 'control domains'],
+    [BENCHMARK.requirementTotal, 'requirements'],
+    [LEVELS.length, 'maturity levels'],
+  ].map(([n, label]) => `<div class="fig"><b>${n}</b><span>${label}</span></div>`).join('');
 
-  const rows = DOMAINS.map((d) => {
-    const r = required(d);
-    return `<tr>
-      <th scope="row" class="sd">
-        <span class="sd-nm"><code>${d.id}</code>${esc(d.name)}</span>
-        <span class="sd-de">${esc(d.descriptor)}</span>
-      </th>
-      <td class="sn">${d.reqs}</td>
-      ${cell(r.t01, 'T0 / T1')}${cell(r.t2, 'T2')}${cell(r.t3, 'T3')}
-    </tr>`;
-  }).join('');
+  const gated = T3_GATED.map((d) => `<li>
+    <span class="gd-id">${d.id}</span>
+    <span class="gd-nm">${esc(d.name)}</span>
+    <span class="gd-de">${esc(d.descriptor)}</span>
+  </li>`).join('');
 
-  return `<div class="spec">
-    <table class="stbl">
-      <thead>
-        <tr>
-          <th scope="col" class="sh-dom">Control domain</th>
-          <th scope="col" class="sh-n">Reqs</th>
-          <th scope="col"><b>T0 / T1</b><em>observe, advise</em></th>
-          <th scope="col"><b>T2</b><em>act, reversible</em></th>
-          <th scope="col"><b>T3</b><em>act, consequential</em></th>
-        </tr>
-      </thead>
-      <tbody>${rows}</tbody>
-    </table>
-    <p class="lead rule-note">${esc(SCORING_RULE)}</p>
+  return `<div class="bench">
+    <div class="figs">${figures}</div>
+    <div class="gate-block">
+      <p class="lead gate-lead">Six of the eleven have to be independently proven &mdash; not just
+        switched on &mdash; before an agent is allowed to do anything irreversible: move money,
+        contact customers at scale, change production, delete data.</p>
+      <ol class="gated">${gated}</ol>
+      <p class="rule-note">${esc(SCORING_RULE)} Mapped to
+        ${BENCHMARK.frameworks.join(', ').replace(/, ([^,]*)$/, ' and $1')}.
+        ${esc(BENCHMARK.cadence).toLowerCase()}.</p>
+    </div>
   </div>`;
 }
 
@@ -195,7 +176,6 @@ export function mount(current) {
   const slot = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
   slot('site-header', header(current));
   slot('site-footer', footer());
-  slot('c-provenance', provenanceBlock());
   slot('c-benchmark', benchmarkInstrument());
   slot('c-authority', authorityModel());
   slot('c-gap', supervisoryGap());

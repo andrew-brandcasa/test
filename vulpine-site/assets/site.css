@@ -41,10 +41,14 @@
   /* documentary photography treatment */
   --img:grayscale(1) sepia(.42) saturate(1.35) hue-rotate(-8deg) contrast(1.06) brightness(.99);
 
-  --r-lg:0; --r-md:0; --r-sm:2px;
+  /* Geometry, container and gutter are taken from the approved production
+     stylesheet, not chosen here. An earlier pass squared every corner off a
+     reading of the guidelines and narrowed the container; that put every
+     component on this site out of step with the design that is already
+     signed off, which is what made the whole build read as "off". */
+  --r-lg:16px; --r-md:12px; --r-sm:8px;
 
-  /* board 31 · layout constants */
-  --w:1240px; --pad:clamp(20px,5vw,64px); --hdr-h:76px;
+  --w:1400px; --pad:clamp(20px,3.6vw,68px); --hdr-h:76px;
   --section-block:clamp(80px,9vw,150px); --section-head-gap:clamp(48px,6vw,80px);
 
   /* board 38 · motion. Everything off under prefers-reduced-motion. */
@@ -75,11 +79,11 @@ p{margin:0}
 /* ---------- type scale ---------- */
 /* Section label — the live site's .k: sahara, wide tracking, weight 500,
    preceded by the brand mark set small. */
-.eyebrow{font-size:13px;letter-spacing:.14em;line-height:1;text-transform:uppercase;
-  color:var(--sahara);font-weight:500;margin-bottom:12px;
-  display:flex;align-items:center;gap:9px}
+.eyebrow{font-size:12.5px;letter-spacing:.18em;line-height:1;text-transform:uppercase;
+  color:var(--sahara);font-weight:500;margin-bottom:clamp(20px,2.4vw,30px);
+  display:flex;align-items:center;gap:12px}
 /* the brand mark itself, small, before every section label */
-.eyebrow::before{content:"";width:11px;height:10.1px;flex:0 0 auto;background:var(--orange);
+.eyebrow::before{content:"";width:12px;height:11px;flex:0 0 auto;background:var(--orange);
   -webkit-mask:url(/assets/logos/vulpine-mark.svg) no-repeat center/contain;
   mask:url(/assets/logos/vulpine-mark.svg) no-repeat center/contain}
 .on-dark .eyebrow{color:#C4A880}
@@ -88,7 +92,7 @@ p{margin:0}
 .big{font-size:clamp(1.75rem,4.2vw,3.75rem);line-height:1.05;letter-spacing:-.03em;max-width:19ch}
 .lead{color:var(--mut);font-size:clamp(1.0625rem,1.5vw,1.375rem);line-height:1.6;
   letter-spacing:-.01em;max-width:54ch}
-.mono-note{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--dim);line-height:1.7}
+.mono-note{font-size:10px;letter-spacing:.08em;color:var(--dim);line-height:1.7}
 
 /* ---------- rhythm ----------
    Ryan: "Every section on every page runs the same beat... Some sections
@@ -150,36 +154,26 @@ nav a[aria-current="page"]{color:var(--ink)}
 @media (min-width:861px){.mnav{display:none}}
 
 /* ---------- hero ----------
-   Photography is structural, not decorative. Ryan: the documentary images
-   "are the only elements on the site that could not be a template." */
-/* One full-bleed media block, a horizontal and a vertical scrim, and the text
-   stacked at the bottom over it. No masked half-image, no seam.
-   Light is primary, so the hero photography is warmed and lifted rather than
-   darkened, and the two scrims are cream. Values taken from the live site's
-   light theme — the image sits at .62 opacity under a horizontal and a
-   vertical cream wash so ink type reads at full contrast over it. */
-.hero{position:relative}
-.hero .media{position:relative;height:min(70svh,720px);min-height:440px;overflow:hidden;
-  background:var(--bg)}
-.hero .media video,.hero .media img{position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;opacity:.62;
-  filter:grayscale(1) sepia(.5) saturate(1.35) hue-rotate(-8deg) brightness(1.62) contrast(.82)}
-.hero .media .g1{position:absolute;inset:0;
-  background:linear-gradient(90deg,#f4f2edf0 16%,#f4f2eda8 48%,#f4f2ed1f)}
-.hero .media .g2{position:absolute;inset:0;
-  background:linear-gradient(0deg,rgba(244,242,237,.92) 0%,transparent 46%)}
-@media (prefers-reduced-motion:reduce){.hero video{display:none}}
-.hero .brandmark{opacity:.06}
-.hero-stack{position:absolute;left:0;right:0;bottom:0;z-index:3;
-  padding:clamp(28px,4vw,56px) 0 clamp(32px,4vw,60px)}
-.hero-stack .in{max-width:var(--w);margin:0 auto;padding:0 var(--pad)}
-.hero-stack .eyebrow{color:var(--sahara)}
+   Type on a clean ground with the mark carrying the right-hand side, matching
+   the approved site. The previous build put the documentary video behind the
+   headline under two cream scrims; at the opacity needed to keep ink type
+   legible the footage read as a stain rather than a photograph, and the
+   section arrived washed out. The photography still runs the page — it does
+   it in the full-bleed breaks, where it is not fighting text for contrast. */
+.hero{position:relative;overflow:hidden;padding:clamp(72px,9vw,132px) 0 clamp(84px,10vw,150px)}
+.hero .in{position:relative;z-index:2;max-width:var(--w);margin:0 auto;padding:0 var(--pad)}
+.hero .brandmark{opacity:1;right:-7%;bottom:auto;top:50%;transform:translateY(-50%);
+  width:min(48vw,640px)}
+.hero .eyebrow{color:var(--sahara)}
 .hero h1{font-size:clamp(2.25rem,5.6vw,5rem);line-height:1.02;letter-spacing:-.03em;
   max-width:17ch;color:var(--ink)}
 .hero h1 em{font-style:normal;color:var(--orange)}
-.hero .lead{margin:20px 0 30px;color:var(--mut);max-width:52ch}
+.hero .lead{margin:clamp(18px,2.2vw,28px) 0 clamp(26px,3vw,38px);color:var(--mut);max-width:52ch}
 .hero .cta{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
-@media (max-width:700px){.hero .media{height:auto;min-height:600px}}
+@media (max-width:860px){
+  .hero .brandmark{width:min(72vw,420px);right:-22%;opacity:.5}
+  .hero h1,.hero .lead{position:relative}
+}
 .page-hero{padding:clamp(64px,8vw,120px) 0 clamp(32px,4vw,56px)}
 .page-hero h1{font-size:clamp(2.25rem,5.6vw,5rem);line-height:1.02;letter-spacing:-.03em;max-width:18ch}
 
@@ -191,7 +185,10 @@ nav a[aria-current="page"]{color:var(--ink)}
 .break .cap{position:absolute;inset:auto 0 0 0;padding:calc(var(--pad) * 1.6) var(--pad) var(--pad);
   background:linear-gradient(to top,rgba(10,10,11,.86) 0%,rgba(10,10,11,.72) 42%,
     rgba(10,10,11,.34) 74%,transparent 100%)}
-.break .cap p{max-width:var(--w);margin:0 auto;color:#F2F1EE;
+/* the cap already carries the page gutter as padding, so the measure has to
+   subtract it — max-width:var(--w) here started the caption one full gutter
+   left of every other section on the page. Same calc the approved hero uses. */
+.break .cap p{max-width:calc(var(--w) - 2 * var(--pad));margin:0 auto;color:#F2F1EE;
   font-size:clamp(19px,2.5vw,33px);letter-spacing:-.028em;line-height:1.22}
 .break .cap p span{display:block;max-width:24ch}
 
@@ -248,7 +245,7 @@ nav a[aria-current="page"]{color:var(--ink)}
 .q .qbody p{color:var(--mut);font-size:15.5px}
 .q .qbody p.first{color:var(--ink);font-size:17px}
 .q .services{grid-column:3}
-.q .services .how{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+.q .services .how{font-size:10.5px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--dim);margin-bottom:8px}
 .q .services ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair-soft)}
 .q .services li{display:flex;align-items:baseline;gap:11px;padding:10px 0;
@@ -279,10 +276,10 @@ nav a[aria-current="page"]{color:var(--ink)}
    bios regardless of how long the prose runs */
 .bio{background:var(--surface);padding:30px;display:flex;flex-direction:column}
 .bio h4{font-size:20px;letter-spacing:-.025em;color:var(--steel)}
-.bio .role{font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+.bio .role{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
   color:var(--dim);margin:7px 0 16px}
 .bio p{color:var(--mut);font-size:14.5px;margin-bottom:12px}
-.bio .creds{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--steel-3);
+.bio .creds{font-size:11px;letter-spacing:.05em;color:var(--steel-3);
   border-top:1px solid var(--hair);padding-top:14px;margin-top:auto}
 .bio p:last-of-type{margin-bottom:16px}
 @media (max-width:800px){.bios{grid-template-columns:1fr}}
@@ -294,7 +291,7 @@ nav a[aria-current="page"]{color:var(--ink)}
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--hair);padding:56px 0 40px}
 .fgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px}
-.fgrid h5{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+.fgrid h5{font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
   color:var(--dim);font-weight:400;margin:0 0 14px}
 .fgrid a{display:block;color:var(--mut);font-size:14px;text-decoration:none;margin-bottom:9px}
 .fgrid a:hover{color:var(--ink)}
@@ -341,9 +338,11 @@ footer{border-top:1px solid var(--hair);padding:56px 0 40px}
   filter:var(--img);border-radius:var(--r-md)}
 
 /* ---------- bio headshots ---------- */
-.bio .ph{margin:0 0 18px}
-.bio .ph img{width:96px;height:96px;object-fit:cover;border-radius:var(--r-sm);
-  filter:var(--img)}
+/* 4:5 portrait, rounded, framed high — the approved treatment. The 96px
+   square this replaced was not asked for and did not match anything. */
+.bio .ph{aspect-ratio:4/5;overflow:hidden;border-radius:var(--r-md);margin:0 0 24px}
+.bio .ph img{width:100%;height:100%;object-fit:cover;object-position:center 18%;
+  filter:grayscale(1) contrast(1.04) brightness(.94)}
 
 /* ---------- keyboard access ---------- */
 :focus-visible{outline:2px solid var(--orange);outline-offset:3px;border-radius:2px}
@@ -358,42 +357,54 @@ footer{border-top:1px solid var(--hair);padding:56px 0 40px}
    band at 520px/7%. Orange on light grounds, cream on the steel. */
 .has-mark{position:relative;overflow:hidden}
 .has-mark > .wrap,.has-mark > .in{position:relative;z-index:2}
+/* Full-strength orange on light grounds, as on the approved site. Holding it
+   at 12% made it read as a printing error rather than a graphic, and left the
+   light sections with nothing carrying them. */
 .brandmark{position:absolute;right:-120px;bottom:-140px;width:560px;aspect-ratio:68.785/63.113;
-  pointer-events:none;z-index:1;opacity:.12;background:var(--orange);
+  pointer-events:none;z-index:1;opacity:1;background:var(--orange);
   -webkit-mask:url(/assets/logos/vulpine-mark.svg) no-repeat center/contain;
   mask:url(/assets/logos/vulpine-mark.svg) no-repeat center/contain}
 .on-dark .brandmark{background:#F2F1EE;opacity:.06;width:620px}
 /* on the closing band the mark centres vertically off the right edge */
 .close .brandmark{left:auto;right:-4%;top:50%;bottom:auto;transform:translateY(-50%);
-  width:520px;opacity:.07}
+  width:520px;opacity:1}
 @media (max-width:860px){
   .brandmark,.on-dark .brandmark,.close .brandmark{width:320px}
   .brandmark{right:-80px;bottom:-90px}}
 
 .rule-note{font-size:13.5px;margin-top:18px;max-width:60ch}
 
-/* ---------- editorial index · lead story + ruled list (home insights) ----
-   Lazard and McKinsey treat the lead story larger and run the rest as
-   text-only rows with category and read time. Hierarchy by scale and
-   position, not three equal cards. */
-.edix{display:grid;grid-template-columns:1.6fr 1fr;gap:clamp(28px,4vw,56px);margin-top:44px;
-  border-top:1px solid var(--hair);padding-top:34px}
-.edix a{text-decoration:none;display:block}
-.edix .meta{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+/* ---------- insight cards · three equal, as on the approved site ----------
+   This replaced a lead-plus-ruled-list split. The lead story's headline sat
+   below a tall image while the list started at the top of the column, so the
+   two halves never lined up and the section read as broken. */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,2.4vw,32px);
+  margin-top:clamp(34px,4vw,52px)}
+.cards a{text-decoration:none;display:flex;flex-direction:column}
+.cards .ph{display:block;aspect-ratio:16/10;overflow:hidden;border-radius:var(--r-md);
+  border:1px solid var(--hair);margin-bottom:20px}
+.cards .ph img{width:100%;height:100%;object-fit:cover;filter:var(--img);
+  transition:transform var(--t-card) var(--ease)}
+.cards a:hover .ph img{transform:scale(1.03)}
+.cards .meta{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
   color:var(--dim)}
-.edix-lead img{width:100%;height:clamp(240px,26vw,360px);object-fit:cover;filter:var(--img);
-  border-radius:var(--r-md)}
-.edix-lead .txt{padding-top:18px}
-.edix-lead h4{font-size:clamp(19px,2vw,26px);line-height:1.25;letter-spacing:-.025em;
-  color:var(--steel);margin-top:8px;max-width:26ch}
-.edix-lead .dek{color:var(--mut);font-size:14.5px;margin-top:10px;max-width:52ch}
-.edix-list{display:flex;flex-direction:column}
-.edix-list > a{padding:18px 0;border-bottom:1px solid var(--hair-soft)}
-.edix-list > a:first-child{padding-top:4px}
-.edix-list h4{font-size:16.5px;line-height:1.35;letter-spacing:-.02em;color:var(--steel);margin-top:7px}
-.edix-list .all{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--orange-tx);border-bottom:0;padding-top:20px}
-@media (max-width:860px){.edix{grid-template-columns:1fr}}
+.cards h4{font-size:17.5px;line-height:1.32;letter-spacing:-.022em;color:var(--ink);margin-top:10px}
+.cards .rd{margin-top:14px;font-size:13.5px;font-weight:500;color:var(--orange-tx)}
+.cards a:hover .rd{color:var(--orange-h)}
+.cards .rd::after{content:" \2192"}
+@media (max-width:860px){.cards{grid-template-columns:1fr}}
+
+/* ---------- small labels ----------
+   These were set in a system monospace, which the approved site uses on
+   numerals only. In Geist the same sizes read thin and weightless, so the
+   label role is carried by weight and tracking instead of by the face. */
+.bio .role,.fgrid h5,.cards .meta,.q .services .how,
+.gaphead,.gaplegend,.rung .g .lab,.gaprow .when{
+  font-weight:500;font-size:11px;letter-spacing:.12em}
+.bio .creds,.caption,.prov{font-size:12.5px;letter-spacing:.01em;line-height:1.65}
+.prov{line-height:1.8}
+.gaprow .when{font-size:12px}
+.chip{font-size:12px;letter-spacing:.01em;border-radius:var(--r-sm)}
 
 /* ---------- micro-polish ---------- */
 h1,h2,h3,.stmt,.solo{text-wrap:balance}
