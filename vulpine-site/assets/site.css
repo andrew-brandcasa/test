@@ -240,7 +240,6 @@ nav a[aria-current="page"]{color:var(--ink)}
 @media (max-width:560px){.sectors{grid-template-columns:1fr}
   .sectors > div{border-right:0;padding-left:0!important}}
 
-/* ---------- questions (Problems We Solve) ---------- */
 /* ---------- questions (Problems We Solve) ----------
    The number used to sit in an 88px gutter that pushed every line of the page
    right and left a dead column beside the headings. It now sits inline with
