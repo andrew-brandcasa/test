@@ -156,6 +156,98 @@ export function optionRamp() {
   </div>`;
 }
 
+/* ============================================================ option D
+   Tier-led, the CIS Navigator pattern rendered rather than guessed.
+   CIS does not put Implementation Groups in a column — IG1/IG2/IG3 are the
+   primary control at the top of the page, and the standard reflows to show
+   what the selected group demands. Each control is then a panel with its name
+   left and "5/5 Safeguards" right.
+
+   Applied here: the reader picks the authority they need to grant, and the
+   instrument answers "then this is what you must clear." The four-segment
+   meter is the ASVS idea — publish the level shape, not a bare count.
+
+   T3 is rendered into the markup, so with no JS the panel still shows the
+   hardest gate rather than going blank. Switching tiers is a state change,
+   not an entrance animation. */
+export function optionTiered() {
+  const TIER_VIEW = [
+    { key: 't01', id: 'T0 / T1', name: 'Observe, advise', meaning: TIERS[1].meaning, gate: TIERS[0].gate },
+    { key: 't2', id: 'T2', name: 'Act, reversible', meaning: TIERS[2].meaning, gate: TIERS[2].gate },
+    { key: 't3', id: 'T3', name: 'Act, consequential', meaning: TIERS[3].meaning, gate: TIERS[3].gate },
+  ];
+
+  /* Three segments for levels 1-2-3; level 0 is "Absent" and fills nothing.
+     The ramp stays steel per the component spec — magnitude is not a decision
+     — and orange marks only the level-3 step, which is the decision. */
+  const meter = (lvl) => {
+    if (lvl === null) return '<span class="mtr off" aria-hidden="true"><i></i><i></i><i></i></span>';
+    const segs = [1, 2, 3].map((n) => {
+      if (n > lvl) return '<i></i>';
+      return `<i class="on${n === 3 && lvl === 3 ? ' hi' : ''}"></i>`;
+    }).join('');
+    return `<span class="mtr" aria-hidden="true">${segs}</span>`;
+  };
+
+  const body = (tk) => DOMAINS.map((d) => {
+    const lvl = req(d)[tk];
+    const lab = lvl === null ? 'Not gated' : `${LEVELS[lvl].name} (${lvl})`;
+    return `<tr${lvl === 3 ? ' class="raised"' : ''}${lvl === null ? ' class="ungated"' : ''}>
+      <th scope="row" class="td-dom"><code>${d.id}</code><span>${esc(d.name)}</span></th>
+      <td class="td-n">${d.reqs}</td>
+      <td class="td-m">${meter(lvl)}<span class="td-lab">${lab}</span></td>
+    </tr>`;
+  }).join('');
+
+  const panels = TIER_VIEW.map((t, i) => `
+    <div class="tpanel" data-tier="${t.key}"${i === 2 ? '' : ' hidden'}>
+      <div class="tpanel-hd">
+        <p class="tp-mean">${esc(t.meaning)}</p>
+        <p class="tp-gate"><span>Gate</span>${esc(t.gate)}</p>
+      </div>
+      <table class="tmx">
+        <thead><tr>
+          <th scope="col">Control domain</th>
+          <th scope="col" class="td-n">Reqs</th>
+          <th scope="col">Maturity level this tier requires</th>
+        </tr></thead>
+        <tbody>${body(t.key)}</tbody>
+      </table>
+    </div>`).join('');
+
+  const tabs = TIER_VIEW.map((t, i) => `
+    <button type="button" class="ttab${i === 2 ? ' on' : ''}" data-tier="${t.key}"
+            aria-pressed="${i === 2 ? 'true' : 'false'}">
+      <span class="tt-id">${t.id}</span><span class="tt-nm">${esc(t.name)}</span>
+    </button>`).join('');
+
+  return `<div class="tiered">
+    <div class="tbar">
+      <p class="tbar-q">What authority do you need to grant?</p>
+      <div class="ttabs" role="group" aria-label="Authority tier">${tabs}</div>
+    </div>
+    ${panels}
+    <p class="opt-note">${esc(SCORING_RULE)}</p>
+  </div>`;
+}
+
+/** Tier switching. Content for every tier is already in the DOM. */
+export function wireTiers(root = document) {
+  root.querySelectorAll('.tiered').forEach((box) => {
+    const tabs = [...box.querySelectorAll('.ttab')];
+    const panels = [...box.querySelectorAll('.tpanel')];
+    tabs.forEach((tab) => tab.addEventListener('click', () => {
+      const k = tab.dataset.tier;
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.classList.toggle('on', on);
+        t.setAttribute('aria-pressed', String(on));
+      });
+      panels.forEach((p) => { p.hidden = p.dataset.tier !== k; });
+    }));
+  });
+}
+
 export function provenance() {
   return `<div class="prov">
     <b>Vulpine Control Architecture Benchmark ${BENCHMARK.version}</b><br>
@@ -174,7 +266,9 @@ export function mountOptions() {
   const put = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
   put('o-prov', provenance());
   put('o-levels', levelKey());
+  put('o-d', optionTiered());
   put('o-a', optionMatrix());
   put('o-b', optionCards());
   put('o-c', optionRamp());
+  wireTiers();
 }
