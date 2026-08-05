@@ -32,7 +32,7 @@ export function header(current) {
       ${link('/who-we-are.html', 'Who we are', 'who')}
       ${link('/problems-we-solve.html', 'Problems we solve', 'problems')}
       ${link('/insights.html', 'Insights', 'insights')}
-      <a class="btn" href="${CTA_HREF}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.2 6.6 8.8 5.9 8.8-5.9"/></svg>Get in touch</a>
+      <a class="btn" href="${CTA_HREF}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>Get in touch</a>
       <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mnav">
         <span></span><span></span>
       </button>
@@ -91,73 +91,55 @@ export function maturityKey() {
     `<div><i class="l${l.n}"></i>${l.n} ${esc(l.name)}</div>`).join('')}</div>`;
 }
 
-/** The public instrument. Unscored: no client data, no invented organization. */
+/**
+ * The public instrument — a published spec table.
+ *
+ * Layout follows the Tailscale pricing comparison: every row is a name with a
+ * grey descriptor beneath it, and the tier columns carry plain text values.
+ * The domain descriptors exist in the data and the previous table had nowhere
+ * to put them, so eleven domains arrived as eleven names a reader could not
+ * evaluate.
+ *
+ * The gating rule already defines a required maturity level for every domain
+ * at every tier; that matrix is what the table publishes. Unscored: no client
+ * data, no invented organization.
+ */
+const T01_GATED = new Set(TIERS[0].gateIds);
+const required = (d) => ({ t01: T01_GATED.has(d.id) ? 2 : null, t2: 2, t3: d.t3 ? 3 : 2 });
+
 export function benchmarkInstrument() {
-  const rows = DOMAINS.map((d) => `
-    <tr>
-      <th scope="row" class="dom"><code>${d.id}</code>${esc(d.name)}</th>
-      <td class="rid">${range(d)}</td>
-      <td class="rcount">${d.reqs} requirements</td>
-      <td class="gate">${gateTag(d)}</td>
-    </tr>`).join('');
+  const cell = (lvl, tier) => lvl === null
+    ? `<td class="sv none" data-t="${tier}">&ndash;</td>`
+    : `<td class="sv${lvl === 3 ? ' hi' : ''}" data-t="${tier}">Level ${lvl}`
+      + `<span>${esc(LEVELS[lvl].name)}</span></td>`;
 
-  const gates = `<div class="gates">
-    <div><div class="lab">T0 / T1 · observe, advise</div>
-      <div class="v">Domains 1, 3, 5, 8 at level 2</div>
-      <p>The human remains the actor of record.</p></div>
-    <div><div class="lab">T2 · act, reversible</div>
-      <div class="v">All eleven at level 2</div>
-      <p>Bounded, reversible or staged, with a tested rollback path.</p></div>
-    <div><div class="lab">T3 · act, consequential</div>
-      <div class="v">Plus six at level 3</div>
-      <p>Irreversible, material or externally binding.</p></div>
+  const rows = DOMAINS.map((d) => {
+    const r = required(d);
+    return `<tr>
+      <th scope="row" class="sd">
+        <span class="sd-nm"><code>${d.id}</code>${esc(d.name)}</span>
+        <span class="sd-de">${esc(d.descriptor)}</span>
+      </th>
+      <td class="sn">${d.reqs}</td>
+      ${cell(r.t01, 'T0 / T1')}${cell(r.t2, 'T2')}${cell(r.t3, 'T3')}
+    </tr>`;
+  }).join('');
+
+  return `<div class="spec">
+    <table class="stbl">
+      <thead>
+        <tr>
+          <th scope="col" class="sh-dom">Control domain</th>
+          <th scope="col" class="sh-n">Reqs</th>
+          <th scope="col"><b>T0 / T1</b><em>observe, advise</em></th>
+          <th scope="col"><b>T2</b><em>act, reversible</em></th>
+          <th scope="col"><b>T3</b><em>act, consequential</em></th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <p class="lead rule-note">${esc(SCORING_RULE)}</p>
   </div>`;
-
-  const mobileRows = DOMAINS.map((d) => `
-    <details class="mrow">
-      <summary>
-        <span class="top">${d.id}</span>${gateTag(d)}
-        <span class="nm">${esc(d.name)}</span>
-        <span class="rng">${range(d)}</span>
-        <span class="pm">+</span>
-      </summary>
-      <div class="mbody">${esc(d.descriptor)}
-        <div class="meta">${d.reqs} requirements${d.t3
-          ? ' · <span class="t3">Carries a level-3 bar for T3 authority</span>' : ''}</div>
-      </div>
-    </details>`).join('');
-
-  return `
-    <div class="inst desk">
-      <div class="inst-top">
-        <span class="t">Control domains · unscored</span>
-        ${maturityKey()}
-      </div>
-      <table class="mx">
-        <thead><tr>
-          <th scope="col">Control domain</th>
-          <th scope="col" class="mid">Requirement set</th>
-          <th scope="col" class="mid">Requirements</th>
-          <th scope="col">Gates</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-      ${gates}
-    </div>
-
-    <div class="mob">
-      <div class="summary">
-        <div><div class="fig">${SUMMARY.domains}</div><div class="cap">Control domains</div></div>
-        <div><div class="fig">${SUMMARY.requirements}</div><div class="cap">Requirements</div></div>
-        <div><div class="fig">${SUMMARY.t3Gated}</div><div class="cap">Gate T3 at level 3</div></div>
-      </div>
-      ${maturityKey()}
-      <div class="mlist">${mobileRows}</div>
-      <div class="inst" style="margin-top:16px;border-radius:var(--r-md)">
-        ${gates.replace('class="gates"', 'class="gates" style="border-top:0"')}
-      </div>
-    </div>
-    <p class="lead rule-note">${SCORING_RULE}</p>`;
 }
 
 /* -------------------------------------- component B · the authority model */

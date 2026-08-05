@@ -159,6 +159,35 @@ illustrations in its thesis band are refused on the same grounds.
 | Mobile menu repeated the CTA already pinned in the sticky header | Panel carries links only |
 | Scoring rule rendered above the mobile instrument | Moved below both variants |
 
+## 6d · Brand guidelines v2.2 — read late, applied (5 Aug)
+
+A 44-board brand guideline exists at `vulpine-brand-guidelines.vercel.app` and
+I had not read it. Everything before this point was built from the deployed
+site plus Ryan's emails. The typeface I chose turned out to be right; almost
+everything around it was not.
+
+| Board | Rule | Was | Now |
+|---|---|---|---|
+| 26 Typography | "Geist. The only typeface." Two weights ship: Regular 400, Medium 500 | Google Fonts, `wght@300;400;500;600` | Self-hosted `/assets/fonts/`, 400 + 500 only, `system-ui` as load-time fallback |
+| 26 | No substitute faces | **Geist Mono** as a webfont — not in the system | System stack `ui-monospace, SFMono-Regular, Menlo`, matching the live site |
+| 27 Digital scale | Eyebrow 13px / +14% | 11.5px / .18em | 13px / .14em |
+| 29 Type misuse | "Orange is an accent, never running text" | `.gaprow .miss` set a sentence in orange | Steel |
+| 29 | "Never headlines without their full stop" | "What we think" | "What we think." |
+| 29 | Never mix tabular and proportional numerals in one table | Partial | `tabular-nums` on the whole instrument |
+| 31 Space & layout | "Sharp is the brand. If a corner looks rounded anywhere but a button, it's wrong." Radii 0 cards/tiles, 2px buttons | 16 / 12 / 8px throughout | 0 / 0 / 2px |
+| 35 Iconography | Lucide only — "never hand-drawn one-offs" | Hand-drawn envelope and arrow | Lucide `mail` and `arrow-right`, as shipped |
+
+**Light mode is the sanctioned exception.** Boards 19–24 specify a dark-first
+brand on a black canvas. Andrew confirmed (5 Aug) that light mode was recently
+approved, which matches Ryan's 30 Jul "light primary" decision and the live
+site's own `[data-theme=light]` scope. The light palette therefore stays as the
+live site defines it — cream `#F4F2ED`, ink `#15151B`, Sahara `#8A6B3C`.
+
+Still unreconciled, for Ryan/Jhonny rather than me to settle: the guidelines'
+grayscale ramp is explicitly cool ("No warm greys, ever") and names Cloud
+`#EDEFF7` as the light surface, while the approved light mode uses a warm
+cream. The two documents disagree; I have followed the approved light mode.
+
 ## 7 · Open items — external dependencies, marked in-page, not invented
 
 | Item | Owner |

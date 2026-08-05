@@ -1,3 +1,10 @@
+/* Geist, self-hosted — brand guidelines v2.2 board 26: "Geist. The only
+   typeface." Only two weights ship. system-ui is a load-time fallback only. */
+@font-face{font-family:'Geist';font-style:normal;font-weight:400;font-display:swap;
+  src:url(/assets/fonts/Geist-Regular.woff2) format('woff2')}
+@font-face{font-family:'Geist';font-style:normal;font-weight:500;font-display:swap;
+  src:url(/assets/fonts/Geist-Medium.woff2) format('woff2')}
+
 /* ==========================================================================
    The Vulpine Group — site stylesheet
 
@@ -15,8 +22,8 @@
    ========================================================================== */
 
 :root{
-  --sans:"Geist",Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
-  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,"Liberation Mono",monospace;
+  --sans:"Geist",system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,"Liberation Mono",monospace;
 
   /* Cold Steel ordinal ramp — single hue, monotone lightness */
   --steel-1:#9AACBA; --steel-2:#6B8395; --steel-3:#455E70; --steel:#2B3B4B;
@@ -34,7 +41,7 @@
   /* documentary photography treatment */
   --img:grayscale(1) sepia(.42) saturate(1.35) hue-rotate(-8deg) contrast(1.06) brightness(.99);
 
-  --r-lg:16px; --r-md:12px; --r-sm:8px;
+  --r-lg:0; --r-md:0; --r-sm:2px;
   --w:1400px; --pad:clamp(20px,3.6vw,68px);
 }
 
@@ -61,7 +68,7 @@ p{margin:0}
 /* ---------- type scale ---------- */
 /* Section label — the live site's .k: sahara, wide tracking, weight 500,
    preceded by the brand mark set small. */
-.eyebrow{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;
+.eyebrow{font-size:13px;letter-spacing:.14em;line-height:1;text-transform:uppercase;
   color:var(--sahara);font-weight:500;margin-bottom:12px;
   display:flex;align-items:center;gap:9px}
 /* the brand mark itself, small, before every section label */
